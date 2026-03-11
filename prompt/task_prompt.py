@@ -49,5 +49,4 @@ for _ in range(3):
     move_to_obj_by_offset('Table', 0, 0)
     move_to_obj_by_offset('Counter', 0, 0)
 
-# RAG
 '''
