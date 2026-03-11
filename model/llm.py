@@ -3,6 +3,11 @@
 import time
 import re
 
+from openai import OpenAI
+from big_brain.config import TASK_LLM_API_KEY, TASK_LLM_BASE_URL, TASK_LLM_MODEL
+from big_brain.config import JUDGE_LLM_API_KEY, JUDGE_LLM_BASE_URL, JUDGE_LLM_MODEL
+from big_brain.config import VLM_API_KEY, VLM_API_BASE_URL, VLM_MODEL
+
 class JudgeLLM:
     # 负责判断任务是否完成，并决定是否要进行重规划
     def __init__(self):
@@ -27,17 +32,32 @@ class JudgeLLM:
 class PlannerLLM:
     # 负责根据用户指令生成计划
     def __init__(self):
-        pass
+        self.client = OpenAI(
+            api_key=TASK_LLM_API_KEY,
+            base_url=TASK_LLM_BASE_URL,
+        )
+        self.model_name = TASK_LLM_MODEL
 
     def generate_code(self, prompt:str)->str:
         print("planning……")
+        # raw_text = "```python\nmove_to_obj_by_offset('Bottle', 0, 0)\npick_up_obj('Bottle')\nmove_to_obj_by_offset('Rubbish_Can', 0, 0)\nput_down_obj_by_offset('Rubbish_Can', 0, 0)\n```"
+        # return self._extract_python_code(raw_text)
         # 询问LLM
-        time.sleep(1)  # 模拟规划过程的时间
-        
-        # LLM返回，mock结果
-        raw_text = "```python\nmove_to_obj_by_offset('Bottle', 0, 0)\npick_up_obj('Bottle')\nmove_to_obj_by_offset('Rubbish_Can', 0, 0)\nput_down_obj_by_offset('Rubbish_Can', 0, 0)\n```"
-
-        return self._extract_python_code(raw_text)
+        try:
+            # 开始调用 API
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.0
+            )
+            raw_text = response.choices[0].message.content
+            print("finish planning")
+            return self._extract_python_code(raw_text)
+        except Exception as e:
+            print(f"Planner LLM 调用失败：{e}")
+            return ""
 
     def _extract_python_code(self, text: str) -> str:
         # ai可能直接输出结果，也可能输出```python```代码块

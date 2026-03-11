@@ -8,6 +8,7 @@ from big_brain.model.rag import RAGManager
 from big_brain.model.llm import PlannerLLM
 from big_brain.prompt.task_prompt import BASE_PROMPT
 from big_brain.config import HISTORY_PATH
+from big_brain.utils.position_utils import get_obj_xy, get_obj_size
 
 class BigBrain:
     def __init__(self):
@@ -27,7 +28,7 @@ class BigBrain:
         # 大脑主流程
         # 输入任务
         # user_instruction = input("请输入任务指令: ")
-        instruction = "pick up the bottle and throw it to the rubbish can"
+        instruction = "pick up the bottle from the desk first and then put it between the apple and banana"
         # RAG调用
         rag_context = self.rag_manager.retrieve(instruction)
         
@@ -39,8 +40,14 @@ class BigBrain:
             final_prompt += rag_context + "\n"        
         # 追加当前任务,使用？号引导LLM生成任务
         final_prompt += f"# {instruction}\n?"
+        # print(final_prompt)
+        print(f"{instruction}\n?")
         # LLM规划任务
         generated_code = self.planner.generate_code(final_prompt)
+        if generated_code.strip() == "":
+            print("LLM未能生成有效的计划。")
+            return False
+        
         print("========== 生成的执行计划 ==========")
         print(generated_code)
         print("====================================")
@@ -50,16 +57,8 @@ class BigBrain:
             # exec 需要知道当前的全局和局部变量
             exec(generated_code, globals())
             print("任务执行成功！")
-            return True
-        except Exception as e:
-            print(f"执行过程中发生异常: {e}")
-            return False
-
-
-        # 反馈最终结果
-        success = True
-        if success:
-            # save history
+            
+            # 保存任务
             task_id = len(self.history_data) + 1
             new_record = {
                 "id": task_id,
@@ -68,7 +67,11 @@ class BigBrain:
             }
             self.history_data.append(new_record)
             self._save_history(HISTORY_PATH)
-        return success
+            return True
+        except Exception as e:
+            print(f"执行过程中发生异常: {e}")
+            return False
+
 
 if __name__ == "__main__":
     brain = BigBrain()
