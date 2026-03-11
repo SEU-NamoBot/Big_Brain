@@ -28,5 +28,16 @@
             "   y = chair_y + radius * np.sin(angle)",
             "   move_to_xy(x, y)"
         ]
+    },
+    {
+        "id": 4,
+        "command": "pick up the bottle from the desk first and then put it between the apple and banana",
+        "task_queue": [
+            "move_to_obj_by_offset('Desk', 0, 0)",
+            "pick_up_obj('Bottle')",
+            "apple_x, apple_y = get_obj_xy('Apple')",
+            "banana_x, banana_y = get_obj_xy('Banana')",
+            "put_down_xy((apple_x + banana_x) / 2, (apple_y + banana_y) / 2)"
+        ]
     }
 ]
