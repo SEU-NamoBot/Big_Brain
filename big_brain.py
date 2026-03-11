@@ -43,7 +43,7 @@ class BigBrain:
         # print(final_prompt)
         print(f"{instruction}\n?")
         # LLM规划任务
-        generated_code = self.planner.generate_code(final_prompt)
+        generated_code = self.planner.generate_code(final_prompt,rag_context)
         if generated_code.strip() == "":
             print("LLM未能生成有效的计划。")
             return False
@@ -66,7 +66,7 @@ class BigBrain:
                 "task_queue": generated_code.splitlines()
             }
             self.history_data.append(new_record)
-            self._save_history(HISTORY_PATH)
+            # self._save_history(HISTORY_PATH)
             return True
         except Exception as e:
             print(f"执行过程中发生异常: {e}")
