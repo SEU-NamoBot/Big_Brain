@@ -4,10 +4,11 @@ import time
 import re
 
 from openai import OpenAI
-from big_brain.config import TASK_LLM_API_KEY, TASK_LLM_BASE_URL, TASK_LLM_MODEL
-from big_brain.config import JUDGE_LLM_API_KEY, JUDGE_LLM_BASE_URL, JUDGE_LLM_MODEL
-from big_brain.config import VLM_API_KEY, VLM_API_BASE_URL, VLM_MODEL
-from big_brain.config import MAX_REPLAN_TIMES
+from config import TASK_LLM_API_KEY, TASK_LLM_BASE_URL, TASK_LLM_MODEL
+from config import JUDGE_LLM_API_KEY, JUDGE_LLM_BASE_URL, JUDGE_LLM_MODEL
+from config import VLM_API_KEY, VLM_API_BASE_URL, VLM_MODEL
+from config import MAX_REPLAN_TIMES
+from utils.utils import extract_code
 
 class JudgeLLM:
     # 负责判断任务是否完成，并决定是否要进行重规划
@@ -58,7 +59,8 @@ class PlannerLLM:
             )
             raw_text = response.choices[0].message.content
             print("finish planning")
-            return self._extract_python_code(raw_text,rag_context)
+            print(f"Last Line to Delete from answer: {rag_context.strip().splitlines()[-1]}")
+            return extract_code(raw_text,rag_context.strip().splitlines()[-1])
         except Exception as e:
             print(f"Planner LLM 调用失败：{e}")
             return ""

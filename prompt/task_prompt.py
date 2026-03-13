@@ -1,8 +1,8 @@
 
 BASE_PROMPT = '''
 import numpy as np
-from big_brain.action.robot_api import move_to_xy, move_to_obj_by_offset, pick_up_xy, pick_up_obj, put_down_xy, put_down_obj_by_offset
-from big_brain.utils.utils import get_obj_xy, get_obj_size
+from action.robot_api import move_to_xy, move_to_obj_by_offset, pick_up_xy, pick_up_obj, put_down_xy, put_down_obj_by_offset
+from utils.utils import get_obj_xy, get_obj_size
 
 # move to coordinates (100, 200) and pick up the item at coordinates (125, 220) 
 move_to_xy(100, 200)

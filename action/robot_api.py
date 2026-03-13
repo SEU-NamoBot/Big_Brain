@@ -1,6 +1,6 @@
 # 存放底层API接口
 
-from big_brain.model.llm import JudgeLLM
+from model.llm import JudgeLLM
 judge_llm = JudgeLLM()
 
 # 为了方便cap，这里抛弃类定义，改用方法

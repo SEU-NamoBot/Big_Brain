@@ -3,12 +3,12 @@ import json
 
 import numpy as np
 
-from big_brain.action.robot_api import *
-from big_brain.model.rag import RAGManager
-from big_brain.model.llm import PlannerLLM
-from big_brain.prompt.task_prompt import BASE_PROMPT
-from big_brain.config import HISTORY_PATH
-from big_brain.utils.utils import get_obj_xy, get_obj_size
+from action.robot_api import *
+from model.rag import RAGManager
+from model.llm import PlannerLLM
+from prompt.task_prompt import BASE_PROMPT
+from config import HISTORY_PATH
+from utils.utils import get_obj_xy, get_obj_size
 
 class BigBrain:
     def __init__(self):

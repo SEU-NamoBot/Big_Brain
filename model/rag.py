@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 from sentence_transformers import SentenceTransformer, util
-from big_brain.config import RAG_MODEL, RAG_SIMILARITY_THRESHOLD
+from config import RAG_MODEL, RAG_SIMILARITY_THRESHOLD
 
 class RAGManager:
     def __init__(self, history_data):

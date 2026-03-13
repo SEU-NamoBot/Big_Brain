@@ -2,7 +2,7 @@
 # 筛key后填 or 直接放
 OBJECT_PROMPT = """
 import numpy as np
-from thesis_ws.src.big_brain.utils.utils import get_obj_xy,get_obj_size,get_obj_rgb,get_robot_pos
+from utils.utils import get_obj_xy,get_obj_size,get_obj_rgb,get_robot_pos
 
 objects = {
     "bottle": ['bottle'],
