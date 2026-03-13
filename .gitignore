@@ -9,3 +9,5 @@ __pycache__/
 # 其他临时文件
 *.log
 *.swp
+
+api_key.py
