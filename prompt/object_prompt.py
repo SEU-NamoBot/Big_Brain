@@ -1,12 +1,19 @@
+
+# 筛key后填 or 直接放
 OBJECT_PROMPT = """
 import numpy as np
 from thesis_ws.src.big_brain.utils.utils import get_obj_xy,get_obj_size,get_obj_rgb,get_robot_pos
 
 objects = {
-    "desk": ['desk0','desk1'],
+    "bottle": ['bottle'],
+    "bar" : ['bar'],
+}
+
+objects = {
+    "desk": ['desk1','desk2'],
     "chair": ['chair']
 }
-# desk0
+# desk1
 ret_val = [objects["desk"][0]]
 
 objects = {

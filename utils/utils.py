@@ -62,7 +62,7 @@ def parse_obj_name(text:str,objects:dict)->list:
     )
     raw_text = response.choices[0].message.content
     code = extract_object_code(raw_text)
-    print(code)
+    # print(code)
     return code
 
 def parse_obj_position(text:str):
@@ -90,13 +90,18 @@ def extract_object_code(text: str) -> str:
 
 if __name__ == "__main__":
     objects = {
-        "desk": ["desk1", "desk2"]
+        "desk": ["desk1", "desk2"],
+        "chair" : ["chair1"],
+        "bottle" : ['bottle1','bottle2'],
+        "fruits" : ['apple', 'banana']
     }
-    code = parse_obj_name("red desk",objects)
-    try:
-        # exec 需要知道当前的全局和局部变量
-        exec(code, globals())
-        print("任务执行成功！")
-        # self._save_history(HISTORY_PATH)
-    except Exception as e:
-        print(f"执行过程中发生异常: {e}")
+    # code = parse_obj_name("red desk",objects)
+    # code = parse_obj_name("the bottle that is closest to the chair",objects)
+    code = parse_obj_name("the bottle that is between the fruits",objects)
+    # try:
+    #     # exec 需要知道当前的全局和局部变量
+    #     exec(code, globals())
+    #     print("任务执行成功！")
+    #     # self._save_history(HISTORY_PATH)
+    # except Exception as e:
+    #     print(f"执行过程中发生异常: {e}")

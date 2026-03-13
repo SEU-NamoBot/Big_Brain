@@ -8,8 +8,8 @@ from big_brain.utils.utils import get_obj_xy, get_obj_size
 move_to_xy(100, 200)
 pick_up_xy(125, 220)
 
-# put down item at the center of the Table
-put_down_obj_by_offset('Table', 0, 0)
+# put down item at 10cm south of the Table
+put_down_obj_by_offset('Table', 0, -10)
 
 # move to "Chair"
 move_to_obj_by_offset('Chair', 0, 0)

@@ -73,7 +73,7 @@ class PlannerLLM:
         match = re.search(pattern, text, re.DOTALL)
         if match:
             return match.group(1).strip()
-        # 也有可能把prompt+输出一起返回了，我们需要抛弃rag_context最后一行及之前的部分
+        # 也有可能把prompt+输出一起返回了，我们需要抛弃我们输入的last_context最后一行及之前的部分，待优化：似乎可以只传最后一句，之后再改（
         if rag_context:
             last_line = rag_context.strip().splitlines()[-1]
             if last_line in text:
