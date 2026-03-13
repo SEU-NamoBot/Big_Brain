@@ -34,6 +34,7 @@ def get_robot_orientation():
 
 def get_robot_arm()->bool:
     # 获取机器臂状态，是否夹持着物品？
+    return True
     return False
 
 def parse_obj_name(text:str,objects:dict)->list:

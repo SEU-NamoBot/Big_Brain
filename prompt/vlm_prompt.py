@@ -34,21 +34,39 @@ object with offset(0,0): means the center of the object
 ### EXAMPLES:
 
 User Input:
-Global Instruction: "put the apple on the center of the desk"
-Current Action: Put down item near desk with offset (0, 0)
-Observation: {'robot_x': 120, 'robot_y': 150, 'holding': false}
+Global Instruction: "put the apple on the center of the chair"
+Current Action: Put down item near chair with offset (0, 0)
+Observation: {'robot_x': 100, 'robot_y': 100, 'holding': false}
 Rule Check Result: {'pass': false, 'failure_code': 'localization_error'}
-[Image shows the apple and is very close to the center of the desk]
+[Image shows the apple and is very close to the center of the chair]
 
 Your Output:
 ```json
 {
     "pass": true,
     "error_type": "none",
-    "reason": "The rule check failed with a localization error. But visually the apple is place at the right position",
+    "reason": "The rule check failed with a localization error. But visually the apple is placed at the right position",
     "suggested_correction": ""
 }
 ```
+
+User Input:
+Global Instruction: "put the apple on the center of the desk"
+Current Action: Put down item near desk with offset (0, 0)
+Observation: {'robot_x': 120, 'robot_y': 150, 'holding': false}
+Rule Check Result: {'pass': false, 'failure_code': 'localization_error'}
+[Image shows a laptop occupying the center of the desk. And the apple is on the laptop.]
+
+Your Output:
+```json
+{
+    "pass": false,
+    "error_type": "target_occupied",
+    "reason": "The rule check failed with a localization error. Visually, the center of the desk is currently occupied by a laptop, which make the robot put the apple on the laptop insteand of desk.",
+    "suggested_correction": "The center is occupied by a laptop. Please place the apple slightly to the right of the laptop instead."
+}
+```
+
 
 User Input:
 Global Instruction: "put the bottle between the apple and the banana"

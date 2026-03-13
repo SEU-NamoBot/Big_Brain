@@ -79,7 +79,7 @@ class JudgeLLM:
         failure_reason = vlm_result["reason"]
         print(f"Judge result: FAIL ({failure_reason})")
         print("Task not completed. Initiating local replanning...")
-        return self.replan()
+        return self.replan(action_info,vlm_result)
 
     def _parse_atomic_task(self, task: str = None, action_id: int = None, task_desc: str = None, params: dict = None) -> dict:
         # 结构化解析
@@ -298,7 +298,6 @@ class JudgeLLM:
             print(f"[JudgeLLM] VLM API Call Failed: {e}")
             return '{"pass": false, "error_type": "vlm_api_error", "reason": "API call failed", "suggested_correction": "Retry previous action."}'
 
-
     def extract_VLM_answer(self,raw_result:dict) -> dict:
         print("\n[JudgeLLM] --- Raw VLM Output ---")
         print(raw_result)
@@ -322,9 +321,75 @@ class JudgeLLM:
                 "suggested_correction": "Re-evaluate the action."
             }
  
-    def replan(self):
+    def replan(self,action_info,vlm_result):
         print("开始微调")
-        pass
+        action_desc = action_info.get("raw", "unknown action")
+        from runtime_context import CTX
+        global_instruction = CTX.get("instruction")
+        # 记录重规划次数，防止死循环
+        if action_desc not in self.replan_retry_counter:
+            self.replan_retry_counter[action_desc] = 0
+            
+        if self.replan_retry_counter[action_desc] >= self.max_replan_times:
+            print(f"[AdjustLLM] Max replan times ({self.max_replan_times}) reached for action: {action_desc}. Task Failed.")
+            return False
+
+        self.replan_retry_counter[action_desc] += 1
+        print(f"\n[AdjustLLM] Initiating Replanning... (Attempt {self.replan_retry_counter[action_desc]}/{self.max_replan_times})")
+
+        # 将 VLM 的核心输出压缩为单行字符串
+        import json
+        vlm_feedback_str = json.dumps({
+            "error_type": vlm_result.get("error_type", "unknown"),
+            "suggested_correction": vlm_result.get("suggested_correction", "Retry the action.")
+        }, ensure_ascii=False)
+
+        # 按照纯 CAP 风格拼接最终的 Prompt
+        from prompt.adjust_prompt import ADJUST_PROMPT
+        final_prompt = ADJUST_PROMPT + "\n"
+        final_prompt += f"# Global Instruction: \"{global_instruction}\"\n"
+        final_prompt += f"# Failed Action: {action_desc}\n"
+        final_prompt += f"# VLM Feedback: {vlm_feedback_str}\n"
+        final_prompt += "?"
+
+        print(f"[AdjustLLM] Calling Task LLM to generate recovery code...")
+        
+        # 调用基础的 call_LLM
+        from utils.utils import call_LLM, extract_code, load_L2_memory
+        raw_text = call_LLM(final_prompt)
+        
+        # 提取真正的代码
+        adjust_code = extract_code(raw_text, "?")
+        print("========== AdjustLLM 生成的微调/恢复代码 ==========")
+        print(adjust_code)
+        print("===================================================")
+        
+        if not adjust_code.strip():
+            print("[AdjustLLM] 生成的代码为空，无法微调。")
+            return False
+            
+        # 动态执行这段代码
+        try:
+            # 引入全局变量和依赖
+            objects = load_L2_memory()
+            local_env = {
+                "objects": objects,
+                "instruction": global_instruction,
+            }
+            exec_globals = globals().copy()
+            exec_globals.update(local_env)
+            
+            # 使用 exec 执行新生成的原语
+            # 注意：新执行的原语里面又会调用 robot_api 的方法，从而再次触发 judge_llm.judge()
+            # 这里有递归，未来可以考虑是否采取微调不重执行来拒绝重调用
+            # exec(adjust_code, exec_globals)
+            
+            print(f"[AdjustLLM] 微调动作执行完毕。")
+            return True
+            
+        except Exception as e:
+            print(f"[AdjustLLM] 微调代码执行时发生异常: {e}")
+            return False
     
 if __name__ == "__main__":
     # instruction = "pick up the bottle from the desk first and then put it between the apple and banana"
