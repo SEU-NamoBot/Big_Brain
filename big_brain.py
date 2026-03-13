@@ -58,7 +58,9 @@ class BigBrain:
             objects = load_L2_memory()
             # 把 objects 本身注入到全局作用域，方便在生成的代码中直接使用
             globals()["objects"] = objects
+            globals()["instruction"] = instruction
             globals().update(objects)
+            globals().update(instruction)
             exec(generated_code, globals())
             print("任务执行成功！")
             

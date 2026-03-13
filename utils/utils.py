@@ -31,6 +31,10 @@ def get_robot_orientation():
     # 获取机器人的朝向
     return 0.0
 
+def get_robot_arm()->bool:
+    # 获取机器臂状态，是否夹持着物品？
+    return True
+
 def parse_obj_name(text:str,objects:dict)->list:
     # 从文本中解析出物体名称
     # 构建prompt
@@ -102,6 +106,9 @@ def load_L2_memory()->dict:
     }
     return objects
 
+def call_VLM(prompt:str):
+    # 调用视觉模型进行判断
+    print("Calling VLM for verification...")
 
 def parse_obj_position(text:str):
     # 从文本中解析出物体位置
