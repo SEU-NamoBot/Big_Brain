@@ -58,6 +58,7 @@ class JudgeLLM:
         # 收集传感器信息
         observation = self._collect_observation()
 
+        print(action_info)
         # 初步规则判断
         rule_result = self._rule_judge(action_info, observation)
         print(rule_result)
@@ -162,11 +163,10 @@ class JudgeLLM:
         return obs
 
     def _rule_judge(self, action_info: dict, observation: dict) -> dict:
-        action = action_info["action"]
         action_id = action_info["action_id"]
 
         if action_id == 1:
-            passed = abs(action["target"][0] - observation["robot_x"] ) <= MOVE_ERROR_THRESHOLD and abs(action["target"][1] - observation["robot_y"]) <= MOVE_ERROR_THRESHOLD
+            passed = abs(action_info["target"][0] - observation["robot_x"] ) <= MOVE_ERROR_THRESHOLD and abs(action_info["target"][1] - observation["robot_y"]) <= MOVE_ERROR_THRESHOLD
             return {
                 "pass": passed, 
                 "failure_code": "localization_error" if not passed else ""
@@ -175,8 +175,8 @@ class JudgeLLM:
             # move_to_obj_by_offset 获取obj xy，获取obj size， 机器人坐标要在目标中心加上半边长宽+offset+误差范围内才ok
             obj_x,obj_y = get_obj_xy(action_info["target"])
             obj_length,obj_width,obj_height = get_obj_size(action_info["target"])
-            target_x = obj_x + action["offset"][0]
-            target_y = obj_y + action["offset"][1]
+            target_x = obj_x + action_info["offset"][0]
+            target_y = obj_y + action_info["offset"][1]
             passed = abs(target_x - observation["robot_x"] ) <= MOVE_ERROR_THRESHOLD + 1/2*obj_length and abs(target_y - observation["robot_y"]) <= MOVE_ERROR_THRESHOLD + 1/2*obj_width
             return {
                 "pass":passed,
@@ -185,7 +185,7 @@ class JudgeLLM:
         elif action_id == 3:
             # pick_up_xy
             holding = observation["holding"]
-            placed = abs(action["target"][0] - observation["robot_x"] ) <= CATCH_ERROR_THRESHOLD and abs(action["target"][1] - observation["robot_y"]) <= CATCH_ERROR_THRESHOLD
+            placed = abs(action_info["target"][0] - observation["robot_x"] ) <= CATCH_ERROR_THRESHOLD and abs(action_info["target"][1] - observation["robot_y"]) <= CATCH_ERROR_THRESHOLD
             failure_code = ""
             if not placed:
                 failure_code = "localization_error"
@@ -213,7 +213,7 @@ class JudgeLLM:
         elif action_id == 5:
             # put_down_xy 机器人不在目标位置，或者还拿着东西都算失败
             holding = observation["holding"]
-            placed = abs(action["target"][0] - observation["robot_x"] ) <= PLACE_ERROR_THRESHOLD and abs(action["target"][1] - observation["robot_y"]) <= PLACE_ERROR_THRESHOLD
+            placed = abs(action_info["target"][0] - observation["robot_x"] ) <= PLACE_ERROR_THRESHOLD and abs(action_info["target"][1] - observation["robot_y"]) <= PLACE_ERROR_THRESHOLD
             failure_code = ""
             if not placed:
                 failure_code = "localization_error"
