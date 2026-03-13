@@ -30,7 +30,11 @@ class JudgeLLM:
         # 导入子任务，先执行该部分。重规划过多直接判fail
         time.sleep(1)
         return True
-
+    
+    def extract_VLM_answer(self)->bool:
+        # 
+        return True
+    
 class PlannerLLM:
     # 负责根据用户指令生成计划
     def __init__(self):

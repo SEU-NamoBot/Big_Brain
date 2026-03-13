@@ -1,0 +1,103 @@
+(brain) xiao@sion-xiao:~/thesis_ws/src/big_brain$ python big_brain.py
+正在加载 Embedding 模型...
+Loading weights: 100%|████████████████████████████████████████| 199/199 [00:00<00:00, 2695.34it/s, Materializing param=pooler.dense.weight]
+MPNetModel LOAD REPORT from: /home/xiao/.cache/huggingface/hub/models--sentence-transformers--all-mpnet-base-v2/snapshots/e8c3b32edf5434bc2275fc9bab85f82640a19130
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+RAG 模块初始化完成。
+rag分数: 
+0 : 0.548837423324585 move to the desk, pick up the cup and put it down on the chair
+1 : 0.44972795248031616 pick up the apple
+2 : 0.17248700559139252 Move around the chair in a circular path with a radius of 1 meter
+3 : 0.014368944801390171 111
+找到相似历史任务，作为参考：
+# move to the desk, pick up the cup and put it down on the chair
+desk_obj = parse_obj_name('desk')
+cup_obj = parse_obj_name('cup')
+chair_obj = parse_obj_name('chair')
+move_to_obj_by_offset(desk_obj,0,0)
+pick_up_obj(cup_obj)
+move_to_obj_by_offset(chair_obj, 0, 0)
+put_down_obj_by_offset(chair_obj, 0, 0)
+
+pick up the bottle from the desk first and then put it between the apple and banana
+?
+planning……
+finish planning
+Last Line to Delete from answer: put_down_obj_by_offset(chair_obj, 0, 0)
+原始输出检查
+====================================
+```python
+desk_obj = parse_obj_name('desk', objects)
+bottle_obj = parse_obj_name('bottle', objects)
+apple_obj = parse_obj_name('apple', objects)
+banana_obj = parse_obj_name('banana', objects)
+
+# Move to the desk and pick up the bottle
+move_to_obj_by_offset(desk_obj, 0, 0)
+pick_up_obj(bottle_obj)
+
+# Move to the position between the apple and banana
+move_to_obj_by_offset(apple_obj, (get_obj_xy(banana_obj)[0] - get_obj_xy(apple_obj)[0]) / 2, 0)
+
+# Put down the bottle
+put_down_obj_by_offset(bottle_obj, 0, 0)
+```
+====================================
+========== 生成的执行计划 ==========
+desk_obj = parse_obj_name('desk', objects)
+bottle_obj = parse_obj_name('bottle', objects)
+apple_obj = parse_obj_name('apple', objects)
+banana_obj = parse_obj_name('banana', objects)
+
+# Move to the desk and pick up the bottle
+move_to_obj_by_offset(desk_obj, 0, 0)
+pick_up_obj(bottle_obj)
+
+# Move to the position between the apple and banana
+move_to_obj_by_offset(apple_obj, (get_obj_xy(banana_obj)[0] - get_obj_xy(apple_obj)[0]) / 2, 0)
+
+# Put down the bottle
+put_down_obj_by_offset(bottle_obj, 0, 0)
+====================================
+# desk?
+原始输出检查
+====================================
+```python
+ret_val = objects['desk'][0]
+```
+====================================
+# bottle?
+原始输出检查
+====================================
+```python
+ret_val = objects['bottle'][0]
+```
+====================================
+# apple?
+原始输出检查
+====================================
+```python
+ret_val = objects['fruits'][0]
+```
+====================================
+# banana?
+原始输出检查
+====================================
+```python
+ret_val = 'banana'
+```
+====================================
+Moving to object: desk with offset (0, 0)
+Judging task completion for task: Move to desk with offset (0, 0)
+Picking up item: bottle1
+Judging task completion for task: Pick up bottle1
+Moving to object: apple with offset (0.0, 0)
+Judging task completion for task: Move to apple with offset (0.0, 0)
+Putting down item near bottle1 with offset (0, 0)
+Judging task completion for task: Put down item near bottle1 with offset (0, 0)
+任务执行成功！

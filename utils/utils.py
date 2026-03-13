@@ -93,7 +93,7 @@ def extract_code(text: str, last_line: str) -> str:
     return text.strip() # 如果没有代码块标记，直接返回原始文本
 
 def load_L2_memory()->dict:
-    # 用来读取l2层
+    # 用来读取l2层,暂时硬编码，未来完善为读取
     objects = {
         "desk": ['desk'],
         "chair": ['chair'],
