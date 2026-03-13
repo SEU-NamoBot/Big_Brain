@@ -1,6 +1,7 @@
 # 辅助判断位置的工具函数
 import re
 
+import numpy as np
 from openai import OpenAI
 
 from prompt.position_prompt import POSITION_PROMPT
@@ -44,35 +45,14 @@ def parse_obj_name(text:str,objects:dict)->list:
     # print(final_prompt)
     print(f"# {text}?")
 
+    # 调用大模型
     raw_text = call_LLM(final_prompt)
 
     code = extract_code(raw_text,text)
     # print(code)
-    return code
-
-def parse_obj_position(text:str):
-    # 从文本中解析出物体位置
-    client = OpenAI(
-            api_key=TASK_LLM_API_KEY,
-            base_url=TASK_LLM_BASE_URL,
-        )
-    return (1.0, 2.0)
-
-def extract_code(text: str, last_line: str) -> str:
-    # ai可能直接输出结果，也可能输出```python```代码块
-    print("原始输出检查")
-    print("====================================")
-    print(text)
-    print("====================================")
-    pattern = r"```python(.*?)```"
-    match = re.search(pattern, text, re.DOTALL)
-    if match:
-        return match.group(1).strip()
-    if last_line:
-        if last_line in text:
-            text = text.split(last_line, 1)[-1] # 保留last_line之后的部分
-    # 也有可能直接丢出了指令
-    return text.strip() # 如果没有代码块标记，直接返回原始文本
+    exec(code, globals())
+    # ret_val是在exec内部定义的,外部标黄是正常现象
+    return ret_val
 
 def call_LLM(prompt:str):
     client = OpenAI(
@@ -93,6 +73,29 @@ def call_LLM(prompt:str):
     raw_text = response.choices[0].message.content
     return raw_text
 
+def extract_code(text: str, last_line: str) -> str:
+    # ai可能直接输出结果，也可能输出```python```代码块
+    print("原始输出检查")
+    print("====================================")
+    print(text)
+    print("====================================")
+    pattern = r"```python(.*?)```"
+    match = re.search(pattern, text, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    if last_line:
+        if last_line in text:
+            text = text.split(last_line, 1)[-1] # 保留last_line之后的部分
+    # 也有可能直接丢出了指令
+    return text.strip() # 如果没有代码块标记，直接返回原始文本
+
+def parse_obj_position(text:str):
+    # 从文本中解析出物体位置
+    client = OpenAI(
+            api_key=TASK_LLM_API_KEY,
+            base_url=TASK_LLM_BASE_URL,
+        )
+    return (1.0, 2.0)
 
 if __name__ == "__main__":
     objects = {
@@ -101,13 +104,6 @@ if __name__ == "__main__":
         "bottle" : ['bottle1','bottle2'],
         "fruits" : ['apple', 'banana']
     }
-    # code = parse_obj_name("red desk",objects)
+    print(parse_obj_name("red desk",objects))
     # code = parse_obj_name("the bottle that is closest to the chair",objects)
-    code = parse_obj_name("the bottle that is between the fruits",objects)
-    # try:
-    #     # exec 需要知道当前的全局和局部变量
-    #     exec(code, globals())
-    #     print("任务执行成功！")
-    #     # self._save_history(HISTORY_PATH)
-    # except Exception as e:
-    #     print(f"执行过程中发生异常: {e}")
+    # print(parse_obj_name("the bottle that is between the fruits",objects))
