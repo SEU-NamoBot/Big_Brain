@@ -1,13 +1,19 @@
 # 存放与大模型交互的接口
 
 import time
+import base64
 import re
+import json
 
+from openai import OpenAI
+import numpy as np
+
+from config import VLM_API_KEY,VLM_API_BASE_URL,VLM_MODEL
 from config import MAX_REPLAN_TIMES,MOVE_ERROR_THRESHOLD,PLACE_ERROR_THRESHOLD,CATCH_ERROR_THRESHOLD
 from utils.utils import get_obj_xy,get_obj_size
 from utils.utils import get_robot_pos,get_robot_orientation,get_robot_arm
-from utils.utils import extract_code,call_LLM,call_VLM
-from prompt.vlm_prompt import VLM_PROMPT
+from utils.utils import extract_code,call_LLM,encode_image
+from prompt.vlm_prompt import VLM_SYSTEM_PROMPT
 from prompt.adjust_prompt import ADJUST_PROMPT
 
 class PlannerLLM:
@@ -36,6 +42,11 @@ class JudgeLLM:
     def __init__(self):
         self.max_replan_times = MAX_REPLAN_TIMES
         self.replan_retry_counter = {}
+        self.vlm_client = OpenAI(
+            api_key=VLM_API_KEY,
+            base_url=VLM_API_BASE_URL,
+        )
+
 
     def judge(self, task:str = None, action_id: int = None, task_desc: str = None, **kwargs):
         # 使用结构化动作(action_id + params)
@@ -49,6 +60,7 @@ class JudgeLLM:
 
         # 初步规则判断
         rule_result = self._rule_judge(action_info, observation)
+        print(rule_result)
 
         # VLM判断
         vlm_result = {"pass": True, "reason": "VLM skipped"}
@@ -67,7 +79,7 @@ class JudgeLLM:
         failure_reason = vlm_result["reason"]
         print(f"Judge result: FAIL ({failure_reason})")
         print("Task not completed. Initiating local replanning...")
-        return self.replan(action_info, observation, vlm_result)
+        return self.replan()
 
     def _parse_atomic_task(self, task: str = None, action_id: int = None, task_desc: str = None, params: dict = None) -> dict:
         # 结构化解析
@@ -145,7 +157,6 @@ class JudgeLLM:
             "robot_y": robot_y,
             "robot_orientation": robot_orientation,
             "holding": holding,
-            "relation_ok": True,
         }
         print(f"Observation: {obs}")
         return obs
@@ -235,49 +246,93 @@ class JudgeLLM:
 
     def judge_VLM(self, action_info: dict, observation: dict, rule_result: dict) -> dict:
         # 构建VLM的prompt，调用VLM进行判断
-        action_id = action_info["action_id"]
-        #
-
-        # print(prompt)
-        # return call_VLM(prompt)
-
-    def extract_VLM_answer(self, raw_result:dict) -> dict:
-        # 暂时留空，等待后面接入优化
-        print("[VLM] model=mock")
-        time.sleep(0.4)
-        return {
-            "pass": True,
-            "reason": "mock vlm pass",
-            "confidence": 0.9,
-        }
-
-    def replan(self, action_info: dict, observation: dict, vlm_result: dict):
-        failure_reason = vlm_result["reason"]
-        
-
-        task = action_info.get("raw", self._action_info_to_text(action_info))
-        print(f"Replanning task: {task}")
-        task_key = f"{action_info.get('action_id', 0)}::{task}"
-        retry_times = self.replan_retry_counter.get(task_key, 0)
-        if retry_times >= self.max_replan_times:
-            print(f"Replan aborted: retry limit reached ({self.max_replan_times})")
-            return False
-
-        self.replan_retry_counter[task_key] = retry_times + 1
-        print(f"Local replan attempt {self.replan_retry_counter[task_key]}/{self.max_replan_times}")
-
-        # 约束：仅做局部微调，不重写整段任务
-        replan_code = self._build_replan_code(task, failure_reason)
-        print("Replan code (exec):")
-        print(replan_code)
-
-        exec_env = {"task": task, "failure_code": failure_code, "time": time}
+        # 获取全局用户指令
+        from runtime_context import CTX
+        global_instruction = CTX.get("instruction")
+        if not global_instruction:
+            print("can not gain the user instruction")
+            time.sleep(10)
+        current_action = action_info["raw"]
+        user_text = f"""
+        User Input:
+        Global Instruction: "{global_instruction}"
+        Current Action: {current_action}
+        Observation: {observation}
+        Rule Check Result: {rule_result}
+        """
+        image_path = "image/image.png" 
         try:
-            exec(replan_code, {}, exec_env)
-            return bool(exec_env.get("replan_success", False))
+            base64_image = encode_image(image_path)
         except Exception as e:
-            print(f"Replan exec error: {e}")
-            return False
+            print(f"[Warning] Failed to read image: {e}. Proceeding without visual (Hallucination risk high).")
+            base64_image = ""
+
+        # 拼装多模态 Message
+        messages =[
+            {"role": "system", "content": VLM_SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": user_text},
+                ]
+            }
+        ]
+        
+        # 如果图片读取成功，加入图片体
+        if base64_image:
+            messages[1]["content"].append({
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}
+            })
+        print("send messages to VLM to judge……")
+        try:
+            response = self.vlm_client.chat.completions.create(
+                model=VLM_MODEL,
+                messages=messages,
+                temperature=0.1, # 保持低温度以输出稳定 JSON
+                top_p=0.9
+            )
+            raw_text = response.choices[0].message.content
+            return raw_text
+        except Exception as e:
+            print(f"[JudgeLLM] VLM API Call Failed: {e}")
+            return '{"pass": false, "error_type": "vlm_api_error", "reason": "API call failed", "suggested_correction": "Retry previous action."}'
+
+
+    def extract_VLM_answer(self,raw_result:dict) -> dict:
+        print("\n[JudgeLLM] --- Raw VLM Output ---")
+        print(raw_result)
+        print("---------------------------------\n")
+        try:
+            # 使用正则提取 JSON 代码块中的内容
+            json_pattern = re.search(r'\{.*\}', raw_result, re.DOTALL)
+            if json_pattern:
+                json_str = json_pattern.group(0)
+                return json.loads(json_str)
+            else:
+                # 尝试直接解析
+                return json.loads(raw_result)
+        except json.JSONDecodeError as e:
+            print(f"[JudgeLLM] Failed to parse VLM JSON: {e}")
+            # 严重解析错误时的兜底保护
+            return {
+                "pass": False, 
+                "error_type": "json_parse_error", 
+                "reason": f"Failed to parse VLM output. Raw text: {raw_result[:50]}...",
+                "suggested_correction": "Re-evaluate the action."
+            }
+ 
+    def replan(self):
+        print("开始微调")
+        pass
     
 if __name__ == "__main__":
-    instruction = "pick up the bottle from the desk first and then put it between the apple and banana"
+    # instruction = "pick up the bottle from the desk first and then put it between the apple and banana"
+    instruction = "put the coke can on the desk"
+    from runtime_context import CTX
+    CTX["instruction"] = instruction
+    CTX["step_idx"] = 0
+    from action.robot_api import put_down_obj_by_offset
+    put_down_obj_by_offset("desk",0,0)
+
+

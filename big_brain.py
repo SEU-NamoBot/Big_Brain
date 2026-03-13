@@ -60,7 +60,9 @@ class BigBrain:
             globals()["objects"] = objects
             globals()["instruction"] = instruction
             globals().update(objects)
-            globals().update(instruction)
+            from runtime_context import CTX
+            CTX["instruction"] = instruction
+            CTX["step_idx"] = 0
             exec(generated_code, globals())
             print("任务执行成功！")
             

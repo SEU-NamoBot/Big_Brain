@@ -1,5 +1,6 @@
 # 辅助判断位置的工具函数
 import re
+import base64
 
 import numpy as np
 from openai import OpenAI
@@ -33,7 +34,7 @@ def get_robot_orientation():
 
 def get_robot_arm()->bool:
     # 获取机器臂状态，是否夹持着物品？
-    return True
+    return False
 
 def parse_obj_name(text:str,objects:dict)->list:
     # 从文本中解析出物体名称
@@ -106,9 +107,9 @@ def load_L2_memory()->dict:
     }
     return objects
 
-def call_VLM(prompt:str):
-    # 调用视觉模型进行判断
-    print("Calling VLM for verification...")
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 
 def parse_obj_position(text:str):
     # 从文本中解析出物体位置
