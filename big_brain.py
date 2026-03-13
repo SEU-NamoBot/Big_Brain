@@ -8,7 +8,7 @@ from big_brain.model.rag import RAGManager
 from big_brain.model.llm import PlannerLLM
 from big_brain.prompt.task_prompt import BASE_PROMPT
 from big_brain.config import HISTORY_PATH
-from big_brain.utils.position_utils import get_obj_xy, get_obj_size
+from thesis_ws.src.big_brain.utils.utils import get_obj_xy, get_obj_size
 
 class BigBrain:
     def __init__(self):
