@@ -76,6 +76,11 @@ class JudgeLLM:
             print("Judge result: PASS")
             return True
 
+        if vlm_result["pass"] == "true":
+            # 正确
+            print("Judge result: PASS (by VLM)")
+            return True
+
         # 判断失败，需要呼唤LLM进行微调
         failure_reason = vlm_result["reason"]
         print(f"Judge result: FAIL ({failure_reason})")
