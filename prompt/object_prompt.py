@@ -5,11 +5,6 @@ import numpy as np
 from utils.utils import get_obj_xy,get_obj_size,get_obj_rgb,get_robot_pos
 
 objects = {
-    "bottle": ['bottle'],
-    "bar" : ['bar'],
-}
-
-objects = {
     "desk": ['desk1','desk2'],
     "chair": ['chair']
 }

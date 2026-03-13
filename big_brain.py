@@ -8,7 +8,7 @@ from model.rag import RAGManager
 from model.llm import PlannerLLM
 from prompt.task_prompt import BASE_PROMPT
 from config import HISTORY_PATH
-from utils.utils import get_obj_xy, get_obj_size, call_LLM, exec_code
+from utils.utils import get_obj_xy, get_obj_size, call_LLM, load_L2_memory,parse_obj_name
 
 class BigBrain:
     def __init__(self):
@@ -55,8 +55,11 @@ class BigBrain:
         # 执行计划
         try:
             # exec 需要知道当前的全局和局部变量
-            exec_code(generated_code)
-            # exec(generated_code, globals())
+            objects = load_L2_memory()
+            # 把 objects 本身注入到全局作用域，方便在生成的代码中直接使用
+            globals()["objects"] = objects
+            globals().update(objects)
+            exec(generated_code, globals())
             print("任务执行成功！")
             
             # 保存任务

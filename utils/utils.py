@@ -50,9 +50,12 @@ def parse_obj_name(text:str,objects:dict)->list:
 
     code = extract_code(raw_text,text)
     # print(code)
-    exec(code, globals())
-    # ret_val是在exec内部定义的,外部标黄是正常现象
-    return ret_val
+    # 将传入的 objects 注入到 exec 的命名空间中，
+    # 让生成的代码可以使用 "objects" 并写出 ret_val
+    local_env = {"objects": objects}
+    exec(code, {}, local_env)
+    # ret_val 是在 exec 的代码中定义的
+    return local_env["ret_val"]
 
 def call_LLM(prompt:str):
     client = OpenAI(
@@ -88,6 +91,17 @@ def extract_code(text: str, last_line: str) -> str:
             text = text.split(last_line, 1)[-1] # 保留last_line之后的部分
     # 也有可能直接丢出了指令
     return text.strip() # 如果没有代码块标记，直接返回原始文本
+
+def load_L2_memory()->dict:
+    # 用来读取l2层
+    objects = {
+        "desk": ['desk'],
+        "chair": ['chair'],
+        "bottle" : ['bottle1', 'bottle2', 'bottle3'],
+        "fruits" : ['apple', 'banana', 'lemon']
+    }
+    return objects
+
 
 def parse_obj_position(text:str):
     # 从文本中解析出物体位置
