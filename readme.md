@@ -2,6 +2,10 @@
 
 这里是其中的大脑部分。
 
+- 安装使用
+1. pip install -r requirements.txt
+2. python big_brain.py 
+
 - 设计理念如下：
 离线地图层：建立3D的地图，并建立L2语义层
 L2语义层包含物品的RGB，物品的xyz，物品的长宽高（如有）
