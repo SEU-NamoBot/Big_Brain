@@ -41,6 +41,19 @@ def move_to_obj_by_offset(Object:str, dx:float, dy: float):
 
 def pick_up_xy(x: float, y: float):
     # 在指定坐标拾取物品
+
+    # 可达
+    print(f"Picking up item at coordinates: ({x}, {y})")
+    judge_llm.judge(
+        action_id=3,
+        x=x,
+        y=y,
+        task_text=f"Pick up at ({x}, {y})",
+    )
+
+
+def pick_up_xy_arm(x: float, y: float):
+    # 在指定坐标拾取物品
     # 1.检查xy是否机械臂可达
     # config 假设机械臂底座离小车质心为差距x10cm,y0cm,z5cm,机械臂肩离底座z=15cm，夹头位置是350，0，212
     robot_x,robot_y,robot_z = get_robot_pos()
@@ -112,4 +125,4 @@ def put_down_obj_by_offset(target:str, dx:float, dy: float):
 
 if __name__ == "__main__":
     # 测试
-    pick_up_xy(350, 0)  # x-10,y,15 + 100 - 30
+    pick_up_xy_arm(350, 0)  # x-10,y,15 + 100 - 30
