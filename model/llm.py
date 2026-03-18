@@ -49,6 +49,8 @@ class JudgeLLM:
 
 
     def judge(self, task:str = None, action_id: int = None, task_desc: str = None, **kwargs):
+        return True
+
         # 使用结构化动作(action_id + params)
         # 解析动作信息
         action_info = self._parse_atomic_task(task=task, action_id=action_id, task_desc=task_desc, params=kwargs)

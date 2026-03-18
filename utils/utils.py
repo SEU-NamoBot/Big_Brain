@@ -26,7 +26,7 @@ def get_obj_rgb(object:str)->str:
 
 def get_robot_pos():
     # 获取机器人的坐标
-    return (0.0, 0.0)   
+    return (0.0, 0.0,10.0)   
 
 def get_robot_orientation():
     # 获取机器人的朝向
