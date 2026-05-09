@@ -32,6 +32,17 @@ for bottle_name in objects['bottle']:
         ret_val.append(bottle_name)
 
 objects = {
+    "red_block": ['red_block1', 'red_block2', 'red_block3'],
+}
+
+# the block on the ground
+ret_val = []
+for block in objects['red_block']:
+    z = get_obj_z(block)
+    if 0 < z < 10:
+        ret_val.append(block)
+
+objects = {
     "chair": ['chair1', 'chair2', 'chair3'],
 }
 # the leftmost chair
@@ -44,6 +55,7 @@ objects = {
     "bottle" : ['bottle1', 'bottle2'],
     "fruits" : ['lemon']
 }
+
 # bottle behind the lemon
 lemon_x, lemon_y = get_obj_xy(objects['fruits'][0])
 bottle_positions = np.array([get_obj_xy(bottle_name) for bottle_name in objects['bottle']])
@@ -54,20 +66,22 @@ objects = {
     "desk" : ['desk1', 'desk2'],
     "bottle" : ['bottle1', 'bottle2', 'bottle3']
 }
+
 # the desk which has two bottles on it.
-ret_val = ""
+ret_val = []
 for obj_name in objects['desk']:
     desk_x, desk_y = get_obj_xy(obj_name)
     desk_size_x, desk_size_y,desk_size_z = get_obj_size(obj_name)
     count = 0
     for bottle_name in objects['bottle']:
         bottle_x, bottle_y = get_obj_xy(bottle_name)
-        if desk_x - desk_size_x/2 < bottle_x < desk_x + desk_size_x/2 and desk_y - desk_size_y/2 < bottle_y < desk_y + desk_size_y/2:
+        bottle_z = get_obj_z(bottle_name)
+        if desk_x - desk_size_x/2 < bottle_x < desk_x + desk_size_x/2 and desk_y - desk_size_y/2 < bottle_y < desk_y + desk_size_y/2 and bottle_z > desk_size_z:
             count += 1
     if count == 2:
-        ret_val = obj_name
+        ret_val.append(obj_name)
         break
-if ret_val == "":
+if ret_val.isEmpty():
     raise ValueError("No desk has two bottles on it.")
 
 objects = {
@@ -75,12 +89,12 @@ objects = {
 }
 
 # the fruit which is closest to the robot
-ret_val = ""
+ret_val = []
 robot_x, robot_y = get_robot_pos()
 fruit_positions = np.array([get_obj_xy(fruit_name) for fruit_name in objects['fruits']])
 distances = np.linalg.norm(fruit_positions - np.array([robot_x, robot_y]), axis=1)
 closest_fruit_idx = np.argmin(distances)
-ret_val = objects['fruits'][closest_fruit_idx]
+ret_val = [objects['fruits'][closest_fruit_idx]]
 """
 
 CAP_OBJECT_PROMPT = """

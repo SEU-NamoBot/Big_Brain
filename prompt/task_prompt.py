@@ -18,6 +18,10 @@ put_down_obj_by_offset(table_obj,0,-10)
 chair_obj = parse_obj_name('chair with a cup on it',objects)
 move_to_obj_by_offset(chair_obj,0,0)
 
+# move to the desk with the smallest sum of absolute coordinates
+desk_obj = parse_obj_name('desk with the smallest sum of absolute coordinates',objects)
+move_to_obj_by_offset(desk_obj,0,0)
+
 # pick up "Cup1"
 cup_obj = parse_obj_name('Cup1',objects)
 pick_up_obj(cup_obj)

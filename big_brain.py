@@ -29,6 +29,7 @@ class BigBrain:
         # 输入任务
         # user_instruction = input("请输入任务指令: ")
         instruction = "pick up the bottle from the desk first and then put it between the apple and banana"
+        instruction = "导航到(100,200)"
         # RAG调用
         rag_context = self.rag_manager.retrieve(instruction)
         
@@ -51,7 +52,9 @@ class BigBrain:
         print("========== 生成的执行计划 ==========")
         print(generated_code)
         print("====================================")
-        
+        from config import TARGET_LLM_MODEL
+        print(f"使用的模型: {TARGET_LLM_MODEL}")
+        return 
         # 执行计划
         try:
             # exec 需要知道当前的全局和局部变量
