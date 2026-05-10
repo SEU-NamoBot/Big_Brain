@@ -30,7 +30,7 @@ from utils.utils import extract_code
 RUN_MODE = "batch"  # "single" or "batch"
 # RUN_MODE = "single"
 EXISTING_RECORD_POLICY = "skip"  # "skip" or "overwrite"
-EXISTING_RECORD_POLICY = "overwrite"
+# EXISTING_RECORD_POLICY = "overwrite"
 
 print(f"RUN_MODE: {RUN_MODE}")
 print(f"EXISTING_RECORD_POLICY: {EXISTING_RECORD_POLICY}")
@@ -39,21 +39,29 @@ SELECTED_TASK_IDS = [
     # "N1",
     # "N2",
     # "N3",
-    "N4",
+    # "N4",
+    # "G1",
+    # "G2",
+    # "G3",
+    # "G4",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
 ]
 
 SELECTED_MODELS = [
-    "GPT-4o",
-    # "OLLAMA",
+    # "GPT-4o",
+    "OLLAMA",
 ]
 
 SELECTED_TEMPERATURES = [
     0.0,
-    # 0.4,
-    # 0.8,
+    0.4,
+    0.8,
 ]
 
-REPEATS = 1
+REPEATS = 3
 RUN_ID = "E3_static_run_001"
 ENABLE_RAG = True
 

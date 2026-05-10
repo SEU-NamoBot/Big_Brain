@@ -1,543 +1,478 @@
 run_id,task_id,task_type,instruction,model_name,temperature,repeat_id,generated_code,semantic_parse_correct,decomposition_correct,code_executable,human_note
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.0,1,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.0,2,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.0,3,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.4,1,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.4,2,"# Move to coordinates (100, 200)
-move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.4,3,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.8,1,"move_to_xy(100, 200)",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.8,2,"After executing the `move_to_xy(100, 200)` command, the robot will move to the coordinates (100, 200).
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.0,1,"move_to_xy(sofa_x, sofa_y)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.0,2,"sofa_obj = parse_obj_name('Sofa', objects)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.0,3,"sofa_obj = parse_obj_name('Sofa', objects)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.4,1,"# Move to the sofa and pick up the water cup
+sofa_obj = parse_obj_name('Sofa', objects)
+move_to_xy(get_obj_xy(sofa_obj)[0], get_obj_xy(sofa_obj)[1])
+water_cup_obj = parse_obj_name('water cup')
+pick_up_xy(get_obj_xy(water_cup_obj)[0], get_obj_xy(water_cup_obj)[1])
 
-This is because in the provided code, each call to `move_to_xy(x, y)` moves the robot to the specified coordinates. After executing this line again at the end of your question mark section, the robot's position would be updated accordingly.
+# Move to the chair and place the water cup
+move_to_obj_by_offset(chair_obj, 0, 0)
+put_down_obj_by_offset(chair_obj, 0, 0)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.4,2,"water_cup_obj = parse_obj_name('water cup', objects)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.4,3,"sofa_obj = parse_obj_name('Sofa', objects)",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.8,1,"# Put the water cup on the sofa onto the chair:
+sofa_obj = parse_obj_name('Sofa', objects)
+move_to_obj_by_offset(chair_obj, 0, 0)  # Move to the chair
+put_down_obj_by_offset(chair_obj, 0, 0)  # Place the water cup from the sofa onto the chair",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.8,2,"To put the water cup on the sofa onto the chair, we need to perform a sequence of actions:
 
-For more details about the specific function or context, please provide additional information.",,,,
-E3_static_run_001,N1,Navigation,"导航到(100,200)",OLLAMA,0.8,3,"To navigate to coordinates (100, 200), use the `move_to_xy(100, 200)` function.
+1. **Move to the Sofa**: First, determine the coordinates or relative positioning of the sofa.
+2. **Pick Up the Water Cup**: Once at the sofa, pick up the water cup.
+3. **Move to the Chair**: Then, move to where the chair is located.
+4. **Place the Cup on the Chair**: Finally, place the cup onto the chair.
 
-?",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.0,1,"move_to_xy(table_obj.x - 50, table_obj.y + 50)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.0,2,"table_obj = parse_obj_name('Table', objects)
-table_x, table_y = get_obj_xy(table_obj)
-# 垃圾桶在桌子的左前方（假设左为x轴负方向，前为y轴正方向）
-trash_x, trash_y = table_x - 50, table_y + 50
-move_to_xy(trash_x, trash_y)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.0,3,"table_obj = parse_obj_name('Table', objects)
-table_x, table_y = get_obj_xy(table_obj)
-# 垃圾桶在桌子的左前方（假设左为x轴负方向，前为y轴正方向）
-trash_x, trash_y = table_x - 50, table_y + 50
-move_to_xy(trash_x, trash_y)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.4,1,"# Parse the trash can object
-trash_obj = parse_obj_name('leftmost trash can', objects)
-# Get its position
-x, y = get_obj_xy(trash_obj)
-# Move to that position
-move_to_xy(x, y)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.4,2,"table_obj = parse_obj_name('Table', objects)
-table_x, table_y = get_obj_xy(table_obj)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.4,3,"# 导航到垃圾桶旁边
-trash_obj = parse_obj_name('Trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
-move_to_xy(trash_x + 50, trash_y)  # 移动到垃圾桶的右侧50cm处",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.8,1,"trash_coord = get_obj_xy(parse_obj_name('trash can', objects))",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.8,2,"import numpy as np
-from action.robot_api import move_to_xy, parse_obj_name
-from utils.utils import get_obj_xy
-from action.robot_api import load_L2_memory
+The exact code would depend on knowing the details about the sofa's location and size. Without specific information, we can't provide precise coordinates or offsets.",,,,
+E3_static_run_001,C1,Composite,Put the water cup on the sofa onto the chair,OLLAMA,0.8,3,"# Get the position of the water cup on the sofa and move it 50 cm west towards the chair
+water_cup_pos = get_obj_xy(parse_obj_name('water cup'))
+move_to_xy(water_cup_pos[0] - 50, water_cup_pos[1])",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.0,1,"red_cube = parse_obj_name('red cube', objects)
+   red_x, red_y = get_obj_xy(red_cube)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.0,2,"# Assuming these are your cube positions:
+blue_cube_pos = get_obj_xy(parse_obj_name('Blue Box', objects))
+yellow_cube_pos = get_obj_xy(parse_obj_name('Yellow Cube', objects))
+red_cube_pos = get_obj_xy(parse_obj_name('Red Cube', objects))
 
-objects = load_L2_memory()
-# 获取垃圾桶的位置
-trash_obj = parse_obj_name('Trash', objects)
-x, y = get_obj_xy(trash_obj)
-move_to_xy(x, y)",,,,
-E3_static_run_001,N2,Navigation,导航到垃圾桶旁边,OLLAMA,0.8,3,"# Parse object name for trash can if not already available
-trashcan_obj = parse_obj_name('Trash Can', objects)
-# Get its position from table or other known positions based on context
-# Assuming it's near the table, you might estimate its position first:
-table_x, table_y = get_obj_xy(table_obj)
-trashcan_x = table_x  # Adjust based on your knowledge of trash can placement relative to table
+# Calculate midpoint between blue and yellow cubes
+midpoint_x = (blue_cube_pos[0] + yellow_cube_pos[0]) / 2
+midpoint_y = (blue_cube_pos[1] + yellow_cube_pos[1]) / 2
 
-# Move directly to trash can
-move_to_xy(trashcan_x, trashcan_y)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.0,1,"# Get the trash can's position
-trash_obj = parse_obj_name('leftmost trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
+# Move to the midpoint
+move_to_xy(midpoint_x, midpoint_y)
 
-# Define the square path parameters (all in cm)
-path = [
-    (0, 0),          # Start at trash can
-    (50, 0),         # Move east
-    (50, -50),       # Move north
-    (0, -50),        # Move west
-    (0, 0)           # Move south back to start
-]
+# Pick up the red cube
+pick_up_xy(red_cube_pos)
 
-# Loop three times to complete the path three times
-for _ in range(3):
-    move_to_xy(trash_x, trash_y)
-    for offset in path[1:]:
-        move_to_xy(offset[0], offset[1])",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.0,2,"# Get the trash can's position
-trash_obj = parse_obj_name('leftmost trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
+# Place the red cube at the midpoint
+put_down_xy(midpoint_x, midpoint_y)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.0,3,"# Assuming these are your cube positions:
+blue_cube_pos = get_obj_xy(parse_obj_name('Blue Box', objects))
+yellow_cube_pos = get_obj_xy(parse_obj_name('Yellow Cube', objects))
+red_cube_pos = get_obj_xy(parse_obj_name('Red Cube', objects))
 
-# Define the square path (50cm sides)
-path = [
-    (trash_x + 50, trash_y),
-    (trash_x + 50, trash_y - 50),
-    (trash_x, trash_y - 50),
-    (trash_x, trash_y)
-]
+# Calculate midpoint between blue and yellow cubes
+midpoint_x = (blue_cube_pos[0] + yellow_cube_pos[0]) / 2
+midpoint_y = (blue_cube_pos[1] + yellow_cube_pos[1]) / 2
 
-# Move around the trash can
-for point in path:
-    move_to_xy(point[0], point[1])
-    sleep(1)  # Wait after each movement to ensure stability",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.0,3,"# Get the trash can's position
-trash_obj = parse_obj_name('leftmost trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
+# Move to the midpoint
+move_to_xy(midpoint_x, midpoint_y)
 
-# Define the square path (50cm sides)
-path = [
-    (trash_x + 50, trash_y),
-    (trash_x + 50, trash_y - 50),
-    (trash_x, trash_y - 50),
-    (trash_x, trash_y)
-]
+# Pick up the red cube
+pick_up_xy(red_cube_pos)
 
-# Move around the trash can
-for point in path:
-    move_to_xy(point[0], point[1])
-    sleep(1)  # Wait after each movement to ensure stability",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.4,1,"trash_x, trash_y = get_obj_xy(trash_obj)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.4,2,"# Get the trash can's position
-trash_obj = parse_obj_name('leftmost trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
+# Place the red cube at the midpoint
+put_down_xy(midpoint_x, midpoint_y)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.4,1,"red_cube_obj = parse_obj_name('red cube', objects)
+move_to_xy(get_obj_xy(red_cube_obj))
+pick_up_obj(red_cube_obj)
 
-# Move in a square pattern around the trash can
-for _ in range(4):
-    move_to_xy(trash_x + 50, trash_y)   # Move right
-    move_to_xy(trash_x + 50, trash_y - 50)  # Move down
-    move_to_xy(trash_x, trash_y - 50)       # Move left
-    move_to_xy(trash_x, trash_y)            # Move up
+blue_cube = parse_obj_name('blue cube', objects)
+yellow_cube = parse_obj_name('yellow cube', objects)
 
-# The robot will now return to the starting position after completing the square",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.4,3,"# Get the position of the trash can
-trash_obj = parse_obj_name('leftmost trash can', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
+mid_x = (get_obj_xy(blue_cube)[0] + get_obj_xy(yellow_cube)[0]) / 2
+mid_y = (get_obj_xy(blue_cube)[1] + get_obj_xy(yellow_cube)[1]) / 2
 
-# Move around the trash can in a square path (50 cm sides) 3 times
-for _ in range(3):
-    # Move east/northeast
-    move_to_obj_by_offset(trash_obj, 50/2, 50/2)
+move_to_xy(mid_x, mid_y)
+put_down_obj_by_offset(table_obj, 0, 0)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.4,2,"# Pick up the red cube
+red_cube = parse_obj_name('red cube', objects)
+pick_up_obj(red_cube)
+
+# Get positions of blue and yellow cubes
+blue_cube = parse_obj_name('blue cube', objects)
+yellow_cube = parse_obj_name('yellow cube', objects)
+move_to_xy(get_obj_xy(blue_cube)[0], get_obj_xy(blue_cube)[1])
+move_to_xy(get_obj_xy(yellow_cube)[0], get_obj_xy(yellow_cube)[1])
+
+# Calculate midpoint between blue and yellow cubes
+blue_x, blue_y = get_obj_xy(blue_cube)
+yellow_x, yellow_y = get_obj_xy(yellow_cube)
+midpoint_x = (blue_x + yellow_x) / 2
+midpoint_y = (blue_y + yellow_y) / 2
+
+# Move to midpoint and place the red cube between them
+move_to_xy(midpoint_x, midpoint_y)
+put_down_obj_by_offset(red_cube, 0, 0)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.4,3,"# Parse blue and yellow cubes
+blue_cube = parse_obj_name('Blue Cube', objects)
+yellow_cube = parse_obj_name('Yellow Cube', objects)
+
+# Get their positions on the table
+_, blue_xy = get_obj_xy(blue_cube)
+_, yellow_xy = get_obj_xy(yellow_cube)
+
+# Calculate a safe midpoint between them (adjusting slightly to avoid overlap)
+midpoint_x = (blue_xy[0] + yellow_xy[0]) // 2 - 5  # Offset by some cm
+midpoint_y = (blue_xy[1] + yellow_xy[1]) // 2 + 5
+
+# Move to the midpoint and place the red cube
+move_to_xy(midpoint_x, midpoint_y)
+put_down_obj_by_offset(red_cube, midpoint_x, midpoint_y)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.8,1,"# To pick up the red cube:
+move_to_xy(100, 200)
+pick_up_xy(130, 245)
+
+# To place between blue and yellow cubes:
+blue_obj = parse_obj_name('Blue Cube', objects)
+yellow_obj = parse_obj_name('Yellow Cube', objects)
+_, _, _ = get_obj_xy(blue_obj)  # Get coordinates to move towards
+_, _, _ = get_obj_xy(yellow_obj) 
+
+# Assuming both are on the table, midpoint is average of x and y:
+midpoint_x = (blue_x + yellow_x) / 2
+midpoint_y = (blue_y + yellow_y) / 2
+
+move_to_xy(midpoint_x, midpoint_y)
+put_down_xy(10, -5)  # Adjust offset as needed for placement between cubes",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.8,2,"red_cube = parse_obj_name('red cube', objects)
+   # Get the coordinates of the red cube
+   x, y = get_obj_xy(red_cube)
+   move_to_xy(x, y)
+   pick_up_obj(red_cube)",,,,
+E3_static_run_001,C2,Composite,Pick up the red cube from the table and place it between the blue cube and the yellow cube,OLLAMA,0.8,3,"# Parse object names
+red_cube = parse_obj_name('red cube', objects)
+blue_cube = parse_obj_name('blue cube', objects)
+yellow_cube = parse_obj_name('yellow cube', objects)
+
+# Move to table and pick up red cube
+move_to_xy(get_obj_xy(blue_cube)[0], get_obj_xy(blue_cube)[1])
+pick_up_obj(red_cube)
+
+# Calculate midpoint between blue and yellow cubes
+mid_x = (get_obj_xy(blue_cube)[0] + get_obj_xy(yellow_cube)[0]) / 2
+mid_y = (get_obj_xy(blue_cube)[1] + get_obj_xy(yellow_cube)[1]) / 2
+
+# Place red cube at midpoint
+put_down_obj_by_offset(red_cube, mid_x, mid_y)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.0,1,"furniture = ['Table', 'Chair', 'Counter', 'Cup', 'Apple']",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.0,2,"# Get list of all objects from memory
+all_objects = load_L2_memory()
+
+# Identify non-furniture items (example criteria: size or known categories)
+non_furniture_items = [obj for obj in all_objects if 
+                       not parse_obj_name(obj, objects) in [""Furniture""]]
+
+for item in non_furniture_items:
+    # Move to the object's position
+    move_to_xy(get_obj_xy(item)[0], get_obj_xy(item)[1])
     
-    # Move north
-    move_to_obj_by_offset(trash_obj, 50/2, -50/2)
+    # Pick up the item
+    pick_up_xy()
     
-    # Move west/southwest
-    move_to_obj_by_offset(trash_obj, -50/2, -50/2)
+    # Place on ground near trash can (adjust offset as needed)
+    put_down_xy(0, 0)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.0,3,"# Get list of all objects from memory
+all_objects = load_L2_memory()
+
+# Identify non-furniture items (example criteria: size or known categories)
+non_furniture_items = [obj for obj in all_objects if 
+                       not parse_obj_name(obj, objects) in [""Furniture""]]
+
+for item in non_furniture_items:
+    # Move to the object's position
+    move_to_xy(get_obj_xy(item)[0], get_obj_xy(item)[1])
     
-    # Move south
-    move_to_obj_by_offset(trash_obj, -50/2, 50/2)
+    # Pick up the item
+    pick_up_xy()
     
-    # Move back to the starting position relative to the trash can
-    move_to_obj_by_offset(trash_obj, 0, 0)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.8,1,"# 移动到垃圾桶的位置
-t_bin_x, t_bin_y = get_obj_xy(table_obj)
-
-# 绕垃圾桶做长50cm，宽50cm的方形运动
-for _ in range(3):
-    # 移动到起点（垃圾桶的位置）
-    move_to_xy(t_bin_x, t_bin_y)
-    
-    # 向北方移动50cm
-    move_to_xy(t_bin_x, t_bin_y + 50)
-    
-    # 旋转90度，准备转向
-    # 假设顺时针方向转为正方向
-    rotate_clockwise(90)  # 假设rotate_clockwise是存在的函数
-    
-    # 移动到下一个点（西北方）
-    move_to_xy(t_bin_x, t_bin_y + 50 - (50 * np.cos(np.radians(90))))
-    
-    # 旋转90度
-    rotate_clockwise(90)
-    
-    # 移动到下一个点
-    move_to_xy(t_bin_x, t_bin_y - (50 * np.sin(np.radians(180))))
-    
-    # 旋转90度
-    rotate_clockwise(90)
-    
-    # 移动到下一个点
-    move_to_xy(t_bin_x + (50 * np.cos(np.radians(270))), t_bin_y - 50)
-
-# 确保结束位置与起始位置重合
-move_to_xy(t_bin_x, t_bin_y)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.8,2,"table_obj = parse_obj_name('Table', objects)
-for _ in range(3):
-    # 移动到桌子中心
-    move_to_xy(get_obj_xy(table_obj)[0], get_obj_xy(table_obj)[1])
-    # 四个顶点依次移动
-    for corner in [(50, 0), (0, -50), (-50, 0), (0, 50)]:
-        x_offset = corner[0]
-        y_offset = corner[1]
-        move_to_obj_by_offset(table_obj, x_offset, y_offset)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,OLLAMA,0.8,3,"# 获取垃圾桶的位置
-trash_x, trash_y = get_xy(table_obj)
-
-# 绕垃圾桶做正方形运动（长宽各50cm），重复3次
-for _ in range(3):
-    current_x, current_y = get_xy()
-    
-    # 移动北50cm
-    new_pos = (current_x, current_y + 50)
-    move_to_xy(new_pos[0], new_pos[1])
-    
-    # 移动东50cm
-    new_pos = (new_pos[0] + 50, new_pos[1])
-    move_to_xy(new_pos[0], new_pos[1])
-    
-    # 移动南50cm
-    new_pos = (new_pos[0], new_pos[1] - 50)
-    move_to_xy(new_pos[0], new_pos[1])
-    
-    # 移动西50cm
-    new_pos = (new_pos[0] - 50, new_pos[1])
-    move_to_xy(new_pos[0], new_pos[1])",,,,
-E3_static_run_001,N4,Navigation,"Go to the trash can with the smallest sum of absolute coordinate values, circle around it with a radius of 50, then return to the starting position",OLLAMA,0.0,1,"# Find all trash cans and select the one with the smallest sum of absolute coordinates
-trash_cans = [obj for obj in objects if parse_obj_name(obj['name'], objects) == 'trash can']
-if not trash_cans:
-    raise ValueError(""No trash can found."")
-target_trash = trash_cans[0]
-x, y = get_obj_xy(target_trash)
-
-# Move to the trash can
-move_to_xy(x, y)
-
-# Circle around the trash can with a radius of 50 cm (relative to its position)
-# Move east
-move_to_obj_by_offset(target_trash, 50, 0)
-# Move north
-move_to_obj_by_offset(target_trash, 0, 50)
-# Move west
-move_to_obj_by_offset(target_trash, -50, 0)
-# Move south
-move_to_obj_by_offset(target_trash, 0, -50)
-
-# Return to the starting position
-move_to_xy(x, y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.0,2,"import math
-from action.robot_api import move_to_xy
-
-# 寻找绝对值之和最小的垃圾桶
-target_x = None
-target_y = None
-min_sum = float('inf')
-for obj in objects.values():
-    if obj['name'] == '垃圾桶':
-        current_sum = abs(obj['x']) + abs(obj['y'])
-        if current_sum < min_sum:
-            min_sum = current_sum
-            target_x = obj['x']
-            target_y = obj['y']
-
-# 生成绕行一圈的路径
-radius = 0.5  # 半径为50cm，转换为米
-
-for angle in range(360):
-    theta = math.radians(angle)
-    x = target_x + radius * math.cos(theta)
-    y = target_y + radius * math.sin(theta)
-    move_to_xy(x, y)
-
-# 返回出发点
-move_to_xy(target_x, target_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.0,3,"import math
-from action.robot_api import move_to_xy
-
-# 寻找绝对值之和最小的垃圾桶
-target_x = None
-target_y = None
-min_sum = float('inf')
-for obj in objects.values():
-    if obj['name'] == '垃圾桶':
-        current_sum = abs(obj['x']) + abs(obj['y'])
-        if current_sum < min_sum:
-            min_sum = current_sum
-            target_x = obj['x']
-            target_y = obj['y']
-
-# 生成绕行一圈的路径
-radius = 0.5  # 半径为50cm，转换为米
-
-for angle in range(360):
-    theta = math.radians(angle)
-    x = target_x + radius * math.cos(theta)
-    y = target_y + radius * math.sin(theta)
-    move_to_xy(x, y)
-
-# 返回出发点
-move_to_xy(target_x, target_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.4,1,"move_to_xy(0, 0)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.4,2,"trash_obj = parse_obj_name('leftmost trash can', objects)
-   trash_x, trash_y = get_obj_xy(trash_obj)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.4,3,"# 找到坐标绝对值之和最小的垃圾桶
-trash_obj = parse_obj_name('垃圾桶', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
-
-# 绕行一个以50cm为半径的圆圈，中心在垃圾桶旁边
-radius = 0.5  # 半径转为米
-steps = 36    # 分成36步，每一步10度
-
-for i in range(steps):
-    angle = 2 * math.pi * i / steps
-    x = trash_x + radius * math.cos(angle)
-    y = trash_y + radius * math.sin(angle)
-    move_to_xy(x, y)
-
-# 返回出发位置（桌子的位置）
-table_obj = parse_obj_name('table', objects)
-table_x, table_y = get_obj_xy(table_obj)
-move_to_xy(table_x, table_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.8,1,"# 导入必要的库和函数
-
-import numpy as np
-from action.robot_api import move_to_xy, move_to_obj_by_offset, pick_up_xy, put_down_xy, load_L2_memory
-from utils.utils import parse_obj_name, get_obj_xy, get_obj_size, load_L2_memory
-
-objects = load_L2_memory()
-
-# 找到坐标绝对值之和最小的垃圾桶
-target_obj = None
-min_sum = float('inf')
-
+    # Place on ground near trash can (adjust offset as needed)
+    put_down_xy(0, 0)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.4,1,"# Iterate through all objects
 for obj in objects:
-    # 假设垃圾桶可以通过特定名称识别（如'trash can'）
-    if 'trash can' in str(obj['name']):
-        current_x, current_y = get_obj_xy(obj)
-        sum_abs = abs(current_x) + abs(current_y)
-        if sum_abs < min_sum:
-            min_sum = sum_abs
-            target_obj = obj
+    # Get the object name
+    obj_name = parse_obj_name(obj, objects)
+    
+    # Check if it is a non-furniture item (example: if it contains ""furniture"" or similar keywords)
+    if ""furniture"" not in obj_name.lower():
+        move_to_xy(get_obj_xy(parse_obj_name(obj, objects)))
+        put_down_xy(obj)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.4,2,"# Move to the table and pick up non-furniture items
+table_obj = parse_obj_name('Table', objects)
+for obj in objects:
+    if (obj.name != 'Table' and 
+        obj.name != 'chair with a cup on it' and
+        obj.name != 'desk with the smallest sum of absolute coordinates'):
+        # Move to the object's position
+        move_to_obj_by_offset(obj, 0, 0)
+        pick_up_obj(obj)
+        # Move to trash can (e.g., leftmost)
+        trash_obj = parse_obj_name('leftmost trash can', objects)
+        move_to_obj_by_offset(trash_obj, 0, 0)
+        put_down_obj_by_offset(trash_obj, 0, 0)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.4,3,"# Get all non-furniture objects
+non_furniture_objects = [obj for obj in get_objects() if not is_furniture(obj)]
 
-if target_obj is not None:
-    target_x, target_y = get_obj_xy(target_obj)
+# Function to move towards a relative position from another object's position
+def move_to_trash_relative_position(obj):
+    # Assuming the trash can is at (0, 0)
+    # Move towards (-50, 50) relative to the current position
+    x = get_object_position(obj)[0] - 50
+    y = get_object_position(obj)[1] + 50
+    move_to_xy(x, y)
 
-# 移动到目标点
-move_to_xy(target_x, target_y)
+# Iterate through each non-furniture object and collect them into the trash can area
+for obj in non_furniture_objects:
+    # Move to the object's position
+    x, y = get_object_position(obj)
+    move_to_xy(x, y)
+    
+    # Pick up the object
+    pick_up_obj(obj)
+    
+    # Move towards a common point near the trash can and place it there
+    if trashes_exist:
+        move_to_trash_relative_position(obj)
+        put_down_obj_by_offset(obj, 0, 0)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.8,1,"for obj_name in objects:
+    obj = parse_obj_name(obj_name)
+    if not ('table' in obj.lower() or 'chair' in obj.lower()):
+        # Move object to (0, 0) which is considered ground level
+        move_to_xy(0, 0)
+        # Assuming a common trash can location known as table_obj
+        # Relocate the item into the trash can at (-50, -50) relative to its original position before moving.
+        original_position = get_original_position(obj)  # This part is hypothetical and illustrative
+        new_trash_offset = (original_position[0] + (-100), original_position[1] + (-50))
+        put_down_obj_by_offset(table_obj, *new_trash_offset)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.8,2,"# Assuming objects is loaded from memory and contains both furniture and other items
+for obj in objects:
+    if not is_furniture(obj):
+        get_obj_xy(obj)
+        pick_up_xy(get_xy(obj))
+        move_to_trash_obj, 0, 0)  # Assuming 'trash' object exists and can be moved to location (0,0)
+        try:
+            put_down_xy(trash_obj, offset_x, offset_y)
+            if has_holding(pick_up_xy):  # To attempt picking up again
+                pick_up_xy()
+        except Exception as e:
+            pass
 
-# 绕行一圈：顺时针移动四个方向，各50cm
-directions = [(0, 50), (50, 0), (0, -50), (-50, 0)]
+# Example of moving the trash can if it's not at (0,0) initially or after some operations
+move_to_obj_by_offset(trash_obj, desired_x, desired_y)",,,,
+E3_static_run_001,C3,Composite,Put all non-furniture items on the ground into the trash can,OLLAMA,0.8,3,"furniture = {'Table', 'Chair', 'Desk'}
+
+for obj_name in objects:
+    if obj_name not in furniture:
+        # Move to object's location and pick it up
+        obj = parse_obj_name(obj_name)
+        move_to_xy(obj.x, obj.y)
+        pick_up_obj(obj)
+        # Place on the ground near leftmost trash can spot
+        table = parse_obj_name('Table', objects)
+        left_trash_pos = (table.x - 50, table.y + 50)  # Assume this is pre-determined based on earlier movements
+        put_down_obj_by_offset(table, x=left_trash_pos[0], y=left_trash_pos[1] - 10)",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.0,1,"# Define the square path directions: East, North, West, South
+directions = [(100, 0), (0, 100), (-100, 0), (0, -100)]
+table_x, table_y = get_obj_xy(table_obj)
+found_cube = False
+
 for dx, dy in directions:
-    move_to_xy(target_x + dx, target_y + dy)
+    current_x = table_x + dx
+    current_y = table_y + dy
+    move_to_xy(current_x, current_y)
+    
+    # Check for red cube at the new position
+    if (dx == 100 and dy == 0) or (dx == -100 and dy == 0):
+        trash_offset = (0, -50)
+    elif (dx == 0 and dy == 100) or (dx == 0 and dy == -100):
+        trash_offset = (-50, 0)
+    else:
+        continue
+    
+    for obj in objects:
+        if parse_obj_name(obj, objects) == 'red cube':
+            # Check if this is the correct position relative to the table
+            if (get_obj_xy(obj)[0] + trash_offset[0], get_obj_xy(obj)[1] + trash_offset[1]) == (table_x, table_y):
+                pick_up_xy(get_obj_xy(obj))
+                trash_obj = parse_obj_name('trash can', objects)
+                move_to_obj_by_offset(trash_obj, 0, -50)  # Move to the trash can's position
+                put_down_obj_by_offset(trash_obj, get_obj_xy(obj)[0], get_obj_xy(obj)[1] + 50)
+                found_cube = True
+                break
+    
+    if found_cube:
+        break
 
-# 返回出发点
-move_to_xy(target_x, target_y)
-print(""任务完成"")",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.8,2,"# 确定目标位置
-target_pos = find_closest_garbage()
+# If a red cube was picked up and placed in the trash can, move back to the table
+if found_cube:
+    move_to_xy(table_x, table_y)",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.0,2,"# Define the square path directions: East, North, West, South
+directions = [(100, 0), (0, 100), (-100, 0), (0, -100)]
+table_x, table_y = get_obj_xy(table_obj)
+found_cube = False
 
-current_pos = get_current_position()
+for dx, dy in directions:
+    current_x = table_x + dx
+    current_y = table_y + dy
+    move_to_xy(current_x, current_y)
+    
+    # Check for red cube at the new position
+    if (dx == 100 and dy == 0) or (dx == -100 and dy == 0):
+        trash_offset = (0, -50)
+    elif (dx == 0 and dy == 100) or (dx == 0 and dy == -100):
+        trash_offset = (-50, 0)
+    else:
+        continue
+    
+    for obj in objects:
+        if parse_obj_name(obj, objects) == 'red cube':
+            # Check if this is the correct position relative to the table
+            if (get_obj_xy(obj)[0] + trash_offset[0], get_obj_xy(obj)[1] + trash_offset[1]) == (table_x, table_y):
+                pick_up_xy(get_obj_xy(obj))
+                trash_obj = parse_obj_name('trash can', objects)
+                move_to_obj_by_offset(trash_obj, 0, -50)  # Move to the trash can's position
+                put_down_obj_by_offset(trash_obj, get_obj_xy(obj)[0], get_obj_xy(obj)[1] + 50)
+                found_cube = True
+                break
+    
+    if found_cube:
+        break
 
-move_to_xy(target_pos.x, target_pos.y)  # 移动到目标点
+# If a red cube was picked up and placed in the trash can, move back to the table
+if found_cube:
+    move_to_xy(table_x, table_y)",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.0,3,"# Define the square path directions: East, North, West, South
+directions = [(100, 0), (0, 100), (-100, 0), (0, -100)]
+table_x, table_y = get_obj_xy(table_obj)
+found_cube = False
 
-positions = [
-    (target_pos.x + 50, target_pos.y),
-    (target_pos.x + 50, target_pos.y - 50),
-    (target_pos.x, target_pos.y - 50),
-    (target_pos.x - 50, target_pos.y)
-]
+for dx, dy in directions:
+    current_x = table_x + dx
+    current_y = table_y + dy
+    move_to_xy(current_x, current_y)
+    
+    # Check for red cube at the new position
+    if (dx == 100 and dy == 0) or (dx == -100 and dy == 0):
+        trash_offset = (0, -50)
+    elif (dx == 0 and dy == 100) or (dx == 0 and dy == -100):
+        trash_offset = (-50, 0)
+    else:
+        continue
+    
+    for obj in objects:
+        if parse_obj_name(obj, objects) == 'red cube':
+            # Check if this is the correct position relative to the table
+            if (get_obj_xy(obj)[0] + trash_offset[0], get_obj_xy(obj)[1] + trash_offset[1]) == (table_x, table_y):
+                pick_up_xy(get_obj_xy(obj))
+                trash_obj = parse_obj_name('trash can', objects)
+                move_to_obj_by_offset(trash_obj, 0, -50)  # Move to the trash can's position
+                put_down_obj_by_offset(trash_obj, get_obj_xy(obj)[0], get_obj_xy(obj)[1] + 50)
+                found_cube = True
+                break
+    
+    if found_cube:
+        break
 
-for pos in positions:
-    move_to_xy(pos[0], pos[1])
+# If a red cube was picked up and placed in the trash can, move back to the table
+if found_cube:
+    move_to_xy(table_x, table_y)",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.4,1,"cube_obj = parse_obj_name('red cube', objects)",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.4,2,"# After completing each movement step (north/south/east/west), check for the red cube
+table_xy = get_obj_xy(table_obj)  # Assuming table_obj is defined as 'table'
 
-# 返回到当前位置
-move_to_xy(current_pos.x, current_pos.y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,OLLAMA,0.8,3,"# Find the target trash can with minimum absolute coordinates sum
-min_sum = float('inf')
-target_x, target_y = 0, 0
+for _ in range(3):
+    move_to_xy(table_xy[0] + 100, table_xy[1] - 100)  # Move north
+    check_for_object(table_xy)
+    
+    if red_cube_exists:
+        move_to_xy(red_cube_position)
+        pick_up_obj(red_cube)
+        move_to_obj_by_offset(trash_obj, 0, 0)
+        put_down_obj_by_offset(trash_obj, 0, 0)
 
-for obj in objects:
-    if parse_obj_name(obj, None) == 'Trash can':
-        x, y = get_obj_xy(obj)
-        current_sum = abs(x) + abs(y)
-        if current_sum < min_sum:
-            min_sum = current_sum
-            target_x, target_y = x, y
+    # Repeat similar steps for other directions",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.4,3,"# Get initial table position
+table_x, table_y = get_obj_xy(table_obj)
 
-# Move to the target trash can's position
-move_to_xy(target_x, target_y)
+for _ in range(4):
+    # Move east 100cm
+    move_to_obj_by_offset(table_obj, 100, 0)
+    
+    # Check for red cube near current position
+    cube_pos = get_obj_xy('red cube')
+    if distance(table_x, table_y, cube_pos) < 20:
+        pick_up_obj(cube_obj)
+        trash_pos = get_obj_xy(trash_obj)
+        put_down_obj_by_offset(trash_pos, 0, 0)
+    
+    # Move north 100cm
+    move_to_obj_by_offset(table_obj, -100, 0)
+    
+    table_x, table_y = get_obj_xy(table_obj)
 
-# Function to move around in a circle with radius 50cm (0.5m)
-def move_around_circle(center_x, center_y, steps=16):
-    angle_increment = 2 * np.pi / steps
-    for i in range(steps):
-        angle = i * angle_increment
-        x = center_x + 0.5 * np.cos(angle)
-        y = center_y + 0.5 * np.sin(angle)
-        move_to_xy(int(round(x)), int(round(y)))
+    # Move west 100cm
+    move_to_obj_by_offset(table_obj, -100, 0)
+    
+    # Check for red cube near current position
+    cube_pos = get_obj_xy('red cube')
+    if distance(table_x, table_y, cube_pos) < 20:
+        pick_up_obj(cube_obj)
+        trash_pos = get_obj_xy(trash_obj)
+        put_down_obj_by_offset(trash_pos, 0, 0)
+    
+    # Move south 100cm
+    move_to_obj_by_offset(table_obj, 100, 0)
+    
+    table_x, table_y = get_obj_xy(table_obj)
 
-# Perform the circular movement around the target trash can
-move_around_circle(target_x, target_y)
+    # Move east 100cm for next iteration
+    move_to_obj_by_offset(table_obj, 100, 0)
 
-# Return to the starting position (after moving back if needed)
-# Alternatively, you can call:
-# move_to_xy(target_x, target_y)  # Or whatever your initial position was before moving away",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,GPT-4o,0.4,1,"trash_can_obj = parse_obj_name('垃圾桶', objects)
-trash_can_x, trash_can_y = get_obj_xy(trash_can_obj)
-move_to_xy(trash_can_x + 25, trash_can_y + 25)
-move_to_xy(trash_can_x + 25, trash_can_y - 25)
-move_to_xy(trash_can_x - 25, trash_can_y - 25)
-move_to_xy(trash_can_x - 25, trash_can_y + 25)
-move_to_xy(trash_can_x + 25, trash_can_y + 25)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,GPT-4o,0.4,2,"# 绕垃圾桶做长50，宽50的方形运动
-trash_obj = parse_obj_name('垃圾桶', objects)
-trash_x, trash_y = get_obj_xy(trash_obj)
-move_to_xy(trash_x + 25, trash_y + 25)
-move_to_xy(trash_x + 25, trash_y - 25)
-move_to_xy(trash_x - 25, trash_y - 25)
-move_to_xy(trash_x - 25, trash_y + 25)
-move_to_xy(trash_x + 25, trash_y + 25)",,,,
-E3_static_run_001,N3,Navigation,绕垃圾桶做长50，宽50的方形运动,GPT-4o,0.4,3,"# move around the trash can in a square path with sides of 50 cm
-trash_can_obj = parse_obj_name('trash can', objects)
-trash_can_x, trash_can_y = get_obj_xy(trash_can_obj)
-move_to_xy(trash_can_x + 25, trash_can_y + 25)
-move_to_xy(trash_can_x + 25, trash_can_y - 25)
-move_to_xy(trash_can_x - 25, trash_can_y - 25)
-move_to_xy(trash_can_x - 25, trash_can_y + 25)
-move_to_xy(trash_can_x + 25, trash_can_y + 25)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,GPT-4o,0.4,1,"# Find the trash can with the smallest absolute coordinate sum
-trash_cans = [obj for obj in objects if 'trash can' in obj['name'].lower()]
-min_sum_trash_can = min(trash_cans, key=lambda obj: abs(obj['x']) + abs(obj['y']))
+# ... rest of the code ...",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.8,1,"# After moving around the table...
+for _ in range(3):
+    move_to_xy(chair_x+150, chair_y+100)
+    # Detect and handle red cube here if any
 
-# Get the coordinates of the trash can
-trash_x, trash_y = get_obj_xy(min_sum_trash_can)
+# Move to trash can with the cup
+move_to_obj_by_offset(trash_obj, 0, 0)
+pick_up_obj(cup_obj)
+put_down_xy(trash_obj, -50, 50)  # Example offset; adjust as needed",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.8,2,"# inside the loop where movements are made:
+for _ in range(3):
+    # Move to table (already done)
+    move_to_obj_by_offset(table_obj, 0, 0)
+    
+    counter_obj = parse_obj_name('Counter')
+    move_to_obj_by_offset(counter_obj, 0, 0)
+    
+    # Check for red cube
+    # Get current position of the robot or use a sensor function to detect the cube
+    # Assuming 'get_current_xy' is a helper function:
+    current_x, current_y = get_current_xy()
+    red_cube = parse_obj_name('red cube', objects)
+    
+    if get_obj_xy(red_cube) and distance_between(current_x, current_y, red_cube):
+        move_to_obj_by_offset(red_cube, -50, 0)  # Move towards the cube
+        pick_up_xy(red_cube)
+        table_obj = parse_obj_name('Table')
+        put_down_obj_by_offset(table_obj, 0, 0)   # Put in trash can
+    
+    # Repeat for other directions within the loop if needed
 
-# Save the starting position
-start_x, start_y = get_obj_xy(parse_obj_name('robot', objects))
+# Ensure to handle all necessary operations after each movement step.",,,,
+E3_static_run_001,C4,Composite,"Move around the table in a square pattern with side length 100; During the moving, when a red cube appears, pick it up and put it into the trash can",OLLAMA,0.8,3,"When a red cube is detected on the table during the robot's movement patterns, it will be picked up once and placed into the trash can.
 
-# Move to the trash can's position
-move_to_xy(trash_x, trash_y)
+**Step-by-step explanation:**
 
-# Perform a circular movement around the trash can with a radius of 50
-angles = np.linspace(0, 2 * np.pi, num=36)  # 36 points for a smooth circle
-for angle in angles:
-    x_offset = 50 * np.cos(angle)
-    y_offset = 50 * np.sin(angle)
-    move_to_xy(trash_x + x_offset, trash_y + y_offset)
+1. **Initialization:** The robot begins at the table position each time it loops through the square movement pattern.
 
-# Return to the starting position
-move_to_xy(start_x, start_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,GPT-4o,0.4,2,"# Find the trash can with the smallest absolute coordinate sum
-trash_cans = [obj for obj in objects if 'trash can' in obj['name']]
-min_sum = float('inf')
-target_trash_can = None
+2. **Movement Pattern:** For each iteration (3 times):
+   - Move east 100 cm.
+   - Move north 100 cm.
+   - Move west 100 cm.
+   - Move south 100 cm, returning to the starting position.
+   
+3. **Object Detection Check:**
+   - After completing each loop (square movement), check if there's a red cube on the table.
 
-for trash_can in trash_cans:
-    x, y = get_obj_xy(trash_can)
-    if abs(x) + abs(y) < min_sum:
-        min_sum = abs(x) + abs(y)
-        target_trash_can = trash_can
+4. **Handling the Red Cube:** If detected:
+   - Use `pick_up_obj()` to pick up the cube.
+   - Use `put_down_obj_by_offset()` to place it into the trash can, positioned at 0 cm offset from the table center (assumed position of the robot).
 
-# Get the coordinates of the target trash can
-trash_x, trash_y = get_obj_xy(target_trash_can)
+5. **Repeat:** This process is repeated for each of the 3 iterations.
 
-# Save the starting position
-start_x, start_y = get_obj_xy(parse_obj_name('robot', objects))
+**Answer:**
 
-# Move to the target trash can
-move_to_xy(trash_x, trash_y)
-
-# Move in a circular path around the trash can with a radius of 50
-circle_points = 36  # Number of points on the circle
-radius = 50
-for i in range(circle_points):
-    angle = 2 * np.pi * i / circle_points
-    x_offset = radius * np.cos(angle)
-    y_offset = radius * np.sin(angle)
-    move_to_xy(trash_x + x_offset, trash_y + y_offset)
-
-# Return to the starting position
-move_to_xy(start_x, start_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,GPT-4o,0.4,3,"# Find the trash can with the smallest absolute coordinate sum
-min_distance = float('inf')
-closest_trash_can = None
-start_x, start_y = get_obj_xy(chair_obj)  # Assuming the robot starts near the office chair
-
-for obj_name, obj_data in objects.items():
-    if 'trash can' in obj_name:
-        obj_x, obj_y = get_obj_xy(obj_data)
-        distance = abs(obj_x) + abs(obj_y)
-        if distance < min_distance:
-            min_distance = distance
-            closest_trash_can = obj_data
-
-# Move to the closest trash can
-trash_x, trash_y = get_obj_xy(closest_trash_can)
-move_to_xy(trash_x, trash_y)
-
-# Perform a circular path around the trash can with a radius of 50
-circle_points = 36  # Number of points to approximate the circle
-radius = 50
-for i in range(circle_points):
-    angle = 2 * np.pi * i / circle_points
-    x_offset = radius * np.cos(angle)
-    y_offset = radius * np.sin(angle)
-    move_to_xy(trash_x + x_offset, trash_y + y_offset)
-
-# Return to the starting position
-move_to_xy(start_x, start_y)",,,,
-E3_static_run_001,N4,Navigation,"Go to the trash can with the smallest sum of absolute coordinate values, circle around it with a radius of 50, then return to the starting position",GPT-4o,0.0,1,,,,,generation_error: AuthenticationError: Error code: 401 - {'error': 'Balance is insufficient'}
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,GPT-4o,0.0,2,"# Find the trash can with the smallest absolute coordinate sum
-trash_cans = [obj for obj in objects if 'trash can' in obj['name'].lower()]
-min_sum_trash_can = min(trash_cans, key=lambda obj: abs(obj['x']) + abs(obj['y']))
-
-# Get the coordinates of the selected trash can
-trash_x, trash_y = get_obj_xy(min_sum_trash_can)
-
-# Save the starting position
-start_x, start_y = get_obj_xy(parse_obj_name('robot', objects))
-
-# Move to the trash can
-move_to_xy(trash_x, trash_y)
-
-# Perform a circular path around the trash can with a radius of 50
-circle_points = 36  # Number of points to approximate the circle
-radius = 50
-for i in range(circle_points):
-    angle = 2 * np.pi * i / circle_points
-    x_offset = radius * np.cos(angle)
-    y_offset = radius * np.sin(angle)
-    move_to_xy(trash_x + x_offset, trash_y + y_offset)
-
-# Return to the starting position
-move_to_xy(start_x, start_y)",,,,
-E3_static_run_001,N4,Navigation,前往坐标绝对值之和最小的垃圾桶旁边，以50为半径绕行一圈，随后返回出发位置,GPT-4o,0.0,3,"# Find the trash can with the smallest sum of absolute coordinates
-trash_cans = [obj for obj in objects if 'trash can' in obj['name']]
-min_sum = float('inf')
-target_trash_can = None
-
-for trash_can in trash_cans:
-    x, y = get_obj_xy(trash_can)
-    if abs(x) + abs(y) < min_sum:
-        min_sum = abs(x) + abs(y)
-        target_trash_can = trash_can
-
-# Get the coordinates of the target trash can
-trash_x, trash_y = get_obj_xy(target_trash_can)
-
-# Save the current position
-current_x, current_y = get_obj_xy({'name': 'current_position'})
-
-# Move to the target trash can
-move_to_xy(trash_x, trash_y)
-
-# Move in a circle with a radius of 50 around the trash can
-circle_points = 8
-radius = 50
-for i in range(circle_points):
-    angle = 2 * np.pi * i / circle_points
-    move_to_xy(trash_x + radius * np.cos(angle), trash_y + radius * np.sin(angle))
-
-# Return to the starting position
-move_to_xy(current_x, current_y)",,,,
+The robot will pick up the red cube and place it into the trash can after completing its square movement pattern three times.",,,,
