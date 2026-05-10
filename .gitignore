@@ -11,3 +11,5 @@ __pycache__/
 *.swp
 
 api_key.py
+
+.env
