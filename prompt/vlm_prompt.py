@@ -79,7 +79,7 @@ Your Output:
     "pass": false,
     "error_type": "wrong_relation",
     "reason": "The rule check passed, meaning the robot placed the object at the target coordinates. However, visually, the bottle is too close to the apple and not in the middle space between the apple and the banana as requested by the global instruction.",
-    "suggested_correction": "The bottle is placed too close to the apple. It needs to be picked up and moved closer to the banana to be exactly in the middle."
+    "suggested_correction": "The bottle is placed too close to the apple. we need to update the memory first. The bottle needs to be picked up and moved closer to the banana to be exactly in the middle."
 }
 ```
 

@@ -33,7 +33,9 @@ put_down_obj_by_offset(laptop_obj, laptop_len/2 + 10.0, 0)
 
 # Global Instruction: "put the bottle between the apple and the banana"
 # Failed Action: put_down_xy(150, 200)
-# VLM Feedback: {"error_type": "wrong_relation", "suggested_correction": "The bottle is placed too close to the apple. It needs to be moved closer to the banana."}
+# VLM Feedback: {"error_type": "wrong_relation", "suggested_correction": "The bottle is placed too close to the apple. we need to update the memory first. The bottle needs to be picked up and moved closer to the banana to be exactly in the middle."}
+# update memory
+objects = load_L2_memory()
 pick_up_xy(150, 200)
 apple_x, apple_y = get_obj_xy(parse_obj_name("apple", objects))
 banana_x, banana_y = get_obj_xy(parse_obj_name("banana", objects))
@@ -41,4 +43,12 @@ mid_x = (apple_x + banana_x) / 2
 mid_y = (apple_y + banana_y) / 2
 move_to_xy(mid_x, mid_y)
 put_down_xy(mid_x, mid_y)
+
+# Global Instruction: "pick up the red block"
+# Failed Action: pick_up_obj("red block")
+# VLM Feedback: {"error_type": "grasp_missed", "suggested_correction":The robot needs to locate the red block and pick it up. Since the red block is not visible in the current view, the robot might need to search for it or move to a different location where it can be found."}
+# update memory
+objects = load_L2_memory()
+red_block_obj = parse_obj_name("red block", objects)
+pick_up_obj(red_block_obj)
 """

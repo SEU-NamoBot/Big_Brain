@@ -1,51 +1,51 @@
 [
-    {
-        "id": 1,
-        "command": "move to the desk, pick up the cup and put it down on the chair",
-        "task_queue": [
-            "desk_obj = parse_obj_name('desk')",
-            "cup_obj = parse_obj_name('cup')",
-            "chair_obj = parse_obj_name('chair')",
-            "move_to_obj_by_offset(desk_obj,0,0)",
-            "pick_up_obj(cup_obj)",
-            "move_to_obj_by_offset(chair_obj, 0, 0)",
-            "put_down_obj_by_offset(chair_obj, 0, 0)"
-        ]
-    },
-    {
-        "id": 2,
-        "command": "pick up the apple",
-        "task_queue": [
-            "apple_obj = parse_obj_name('apple')",
-            "move_to_obj_by_offset(apple_obj, 0, 0)",
-            "pick_up_obj(apple_obj)"
-        ]
-    },
-    {
-        "id": 3,
-        "command": "Move around the chair in a circular path with a radius of 1 meter",
-        "task_queue": [
-            "chair_x, chair_y = get_obj_xy('Chair')",
-            "radius = 100",
-            "for angle in np.linspace(0, 2*np.pi, 9)[:-1]:",
-            "   x = chair_x + radius * np.cos(angle)",
-            "   y = chair_y + radius * np.sin(angle)",
-            "   move_to_xy(x, y)"
-        ]
-    },
-    {
-        "id": 4,
-        "command": "111",
-        "task_queue": [
-            "desk_obj = parse_obj_name('desk')",
-            "bottle_obj = parse_obj_name('bottle')",
-            "apple_obj = parse_obj_name('apple')",
-            "banana_obj = parse_obj_name('banana')",
-            "move_to_obj_by_offset(desk_obj, 0, 0)",
-            "pick_up_obj(bottle_obj)",
-            "apple_x, apple_y = get_obj_xy(apple_obj)",
-            "banana_x, banana_y = get_obj_xy(banana_obj)",
-            "put_down_xy((apple_x + banana_x) / 2, (apple_y + banana_y) / 2)"
-        ]
-    }
+  {
+    "id": 1,
+    "command": "move to the desk, pick up the cup and put it down on the chair",
+    "task_queue": [
+      "desk_obj = parse_obj_name('desk')",
+      "cup_obj = parse_obj_name('cup')",
+      "chair_obj = parse_obj_name('chair')",
+      "move_to_obj_by_offset(desk_obj,0,0)",
+      "pick_up_obj(cup_obj)",
+      "move_to_obj_by_offset(chair_obj, 0, 0)",
+      "put_down_obj_by_offset(chair_obj, 0, 0)"
+    ]
+  },
+  {
+    "id": 2,
+    "command": "pick up the apple",
+    "task_queue": [
+      "apple_obj = parse_obj_name('apple')",
+      "move_to_obj_by_offset(apple_obj, 0, 0)",
+      "pick_up_obj(apple_obj)"
+    ]
+  },
+  {
+    "id": 3,
+    "command": "Move around the chair in a circular path with a radius of 1 meter",
+    "task_queue": [
+      "chair_x, chair_y = get_obj_xy('Chair')",
+      "radius = 100",
+      "for angle in np.linspace(0, 2*np.pi, 9)[:-1]:",
+      "   x = chair_x + radius * np.cos(angle)",
+      "   y = chair_y + radius * np.sin(angle)",
+      "   move_to_xy(x, y)"
+    ]
+  },
+  {
+    "id": 4,
+    "command": "test",
+    "task_queue": [
+      "desk_obj = parse_obj_name('desk')",
+      "bottle_obj = parse_obj_name('bottle')",
+      "apple_obj = parse_obj_name('apple')",
+      "banana_obj = parse_obj_name('banana')",
+      "move_to_obj_by_offset(desk_obj, 0, 0)",
+      "pick_up_obj(bottle_obj)",
+      "apple_x, apple_y = get_obj_xy(apple_obj)",
+      "banana_x, banana_y = get_obj_xy(banana_obj)",
+      "put_down_xy((apple_x + banana_x) / 2, (apple_y + banana_y) / 2)"
+    ]
+  }
 ]

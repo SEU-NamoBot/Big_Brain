@@ -29,8 +29,12 @@ def get_obj_rgb(object:str)->str:
     return color
 
 def get_robot_pos():
-    # 获取机器人的坐标
-    return (0.0, 0.0,10.0)   
+    # 获取机器人的xy坐标
+    return (0.0, 0.0)   
+
+def get_robot_z():
+    # 获取机器人的高度
+    return 10.0
 
 def get_robot_orientation():
     # 获取机器人的朝向
@@ -110,6 +114,15 @@ def load_L2_memory()->dict:
         "bottle" : ['bottle1', 'bottle2', 'bottle3'],
         "fruits" : ['apple', 'banana', 'lemon']
     }
+    # objects = {
+    #     "trash_can": ['trash_can1', 'trash_can2'],
+    #     "block": ['red_block1', 'red_block2', 'blue_block1', 'yellow_block1', 'green_block1'],
+    #     "table": ['table1', 'table2'],
+    #     "cup": ['cup1', 'cup2'],
+    #     "sofa": ['sofa1'],
+    #     "chair": ['chair1', 'chair2'],
+    #     "bottle": ['bottle1', 'bottle2']
+    # }
     return objects
 
 def encode_image(image_path):

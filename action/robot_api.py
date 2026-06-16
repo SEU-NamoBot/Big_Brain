@@ -4,7 +4,7 @@ import time
 from roarm_sdk.roarm import roarm
 
 from model.llm import JudgeLLM
-from utils.utils import get_robot_pos
+from utils.utils import get_robot_pos,get_robot_z
 
 judge_llm = JudgeLLM()
 
@@ -56,7 +56,8 @@ def pick_up_xy_arm(x: float, y: float):
     # 在指定坐标拾取物品
     # 1.检查xy是否机械臂可达
     # config 假设机械臂底座离小车质心为差距x10cm,y0cm,z5cm,机械臂肩离底座z=15cm，夹头位置是350，0，212
-    robot_x,robot_y,robot_z = get_robot_pos()
+    robot_x,robot_y = get_robot_pos()
+    robot_z = get_robot_z()
     # 夹头位置
     hand_x = robot_x + 10 + 350 # 360
     hand_y = robot_y # 0

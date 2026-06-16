@@ -1,9 +1,10 @@
 
 BASE_PROMPT = """
 import numpy as np
-from action.robot_api import move_to_xy,move_to_obj_by_offset,pick_up_xy,pick_up_obj,put_down_xy, put_down_obj_by_offset
+from action.robot_api import move_to_xy, move_to_obj_by_offset, pick_up_xy, pick_up_obj, put_down_xy, put_down_obj_by_offset
 from utils.utils import parse_obj_name
-from utils.utils import get_obj_xy,get_obj_size,load_L2_memory
+from utils.utils import get_obj_xy, get_obj_size, load_L2_memory
+from utils.utils import get_robot_pos
 
 objects = load_L2_memory()
 # move to coordinates (100, 200) and pick up the item at coordinates (125, 220) 
@@ -47,14 +48,15 @@ move_to_obj_by_offset(box_obj,0,0)
 box_length,box_width,box_height = get_obj_size(box_obj)
 put_down_obj_by_offset(box_obj, box_length/2+5, box_width/2+5)
 
-# move around the office chair in a rectangular path of 3 meters by 2 meters
+# move around the office chair in a rectangular path of 3 meters by 2 meters and then return to the original position
+robot_x, robot_y, _ = get_robot_pos()
 chair_obj = parse_obj_name('the office chair',objects)
 chair_x,chair_y = get_obj_xy(chair_obj)
 move_to_xy(chair_x+150, chair_y+100)
 move_to_xy(chair_x+150, chair_y-100)
 move_to_xy(chair_x-150, chair_y-100)
 move_to_xy(chair_x-150, chair_y+100)
-move_to_xy(chair_x+150, chair_y+100)
+move_to_xy(robot_x, robot_y)
 
 # move to the table which there are two bottles on it, then move to the counter, repeat 3 times
 table_obj = parse_obj_name('table which there are two bottles on it')

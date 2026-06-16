@@ -1,0 +1,149 @@
+[
+  {
+    "id": 1,
+    "command": "Navigate to (150, -60)",
+    "task_queue": ["move_to_xy(150, -60)"]
+  },
+  {
+    "id": 2,
+    "command": "Navigate to the table",
+    "task_queue": [
+      "table_obj = parse_obj_name('table', objects)",
+      "move_to_obj_by_offset(table_obj, 0, 0)"
+    ]
+  },
+  {
+    "id": 3,
+    "command": "Move around the sofa in a rectangular path of length 60 and width 40",
+    "task_queue": [
+      "sofa_obj = parse_obj_name('sofa', objects)",
+      "sofa_x, sofa_y = get_obj_xy(sofa_obj)",
+      "move_to_xy(sofa_x + 30, sofa_y + 20)",
+      "move_to_xy(sofa_x + 30, sofa_y - 20)",
+      "move_to_xy(sofa_x - 30, sofa_y - 20)",
+      "move_to_xy(sofa_x - 30, sofa_y + 20)",
+      "move_to_xy(sofa_x + 30, sofa_y + 20)"
+    ]
+  },
+  {
+    "id": 4,
+    "command": "Go to the table with the smallest sum of absolute coordinates, circle it with radius 60, then return to the starting point",
+    "task_queue": [
+      "original_x, original_y = get_robot_pos()",
+      "table_obj = parse_obj_name('the table with the smallest sum of absolute coordinates', objects)",
+      "table_x, table_y = get_obj_xy(table_obj)",
+      "for angle in np.linspace(0, 2 * np.pi, 8, endpoint=False):",
+      "    offset_x = 60 * np.cos(angle)",
+      "    offset_y = 60 * np.sin(angle)",
+      "    move_to_xy(table_x + offset_x, table_y + offset_y)",
+      "move_to_xy(original_x, original_y)"
+    ]
+  },
+  {
+    "id": 5,
+    "command": "Pick up the blue block",
+    "task_queue": [
+      "blue_block_obj = parse_obj_name('blue block', objects)",
+      "pick_up_obj(blue_block_obj)"
+    ]
+  },
+  {
+    "id": 6,
+    "command": "Pick up the green block on the ground",
+    "task_queue": [
+      "green_block_obj = parse_obj_name('green block on the ground', objects)",
+      "pick_up_obj(green_block_obj)"
+    ]
+  },
+  {
+    "id": 7,
+    "command": "Put the object on the sofa",
+    "task_queue": [
+      "sofa_obj = parse_obj_name('sofa', objects)",
+      "put_down_obj_by_offset(sofa_obj, 0, 0)"
+    ]
+  },
+  {
+    "id": 8,
+    "command": "Put the object between the green block and the yellow block",
+    "task_queue": [
+      "green_block_obj = parse_obj_name('green block', objects)",
+      "yellow_block_obj = parse_obj_name('yellow block', objects)",
+      "green_block_x, green_block_y = get_obj_xy(green_block_obj)",
+      "yellow_block_x, yellow_block_y = get_obj_xy(yellow_block_obj)",
+      "mid_x = (green_block_x + yellow_block_x) / 2",
+      "mid_y = (green_block_y + yellow_block_y) / 2",
+      "move_to_xy(mid_x, mid_y)",
+      "put_down_xy(mid_x, mid_y)"
+    ]
+  },
+  {
+    "id": 9,
+    "command": "Put the book on the table onto the sofa",
+    "task_queue": [
+      "book_obj = parse_obj_name('book on the table', objects)",
+      "sofa_obj = parse_obj_name('sofa', objects)",
+      "move_to_obj_by_offset(book_obj, 0, 0)",
+      "pick_up_obj(book_obj)",
+      "move_to_obj_by_offset(sofa_obj, 0, 0)",
+      "put_down_obj_by_offset(sofa_obj, 0, 0)"
+    ]
+  },
+  {
+    "id": 10,
+    "command": "Pick up the blue block on the sofa and put it between the green block and the yellow block",
+    "task_queue": [
+      "blue_block_obj = parse_obj_name('blue block on the sofa', objects)",
+      "green_block_obj = parse_obj_name('green block', objects)",
+      "yellow_block_obj = parse_obj_name('yellow block', objects)",
+      "move_to_obj_by_offset(blue_block_obj, 0, 0)",
+      "pick_up_obj(blue_block_obj)",
+      "green_block_x, green_block_y = get_obj_xy(green_block_obj)",
+      "yellow_block_x, yellow_block_y = get_obj_xy(yellow_block_obj)",
+      "mid_x = (green_block_x + yellow_block_x) / 2",
+      "mid_y = (green_block_y + yellow_block_y) / 2",
+      "move_to_xy(mid_x, mid_y)",
+      "put_down_xy(mid_x, mid_y)"
+    ]
+  },
+  {
+    "id": 11,
+    "command": "Put all objects on the table into the box",
+    "task_queue": [
+      "objects_on_table = parse_obj_name('all objects on the table', objects)",
+      "box_obj = parse_obj_name('box', objects)",
+      "for object in objects_on_table:",
+      "    move_to_obj_by_offset(object, 0, 0)",
+      "    pick_up_obj(object)",
+      "    move_to_obj_by_offset(box_obj, 0, 0)",
+      "    put_down_obj_by_offset(box_obj, 0, 0)"
+    ]
+  },
+  {
+    "id": 12,
+    "command": "Move in a square of side length 120 around the trash can, when a green block appears, pick it up and put it into the box",
+    "task_queue": [
+      "trash_can_obj = parse_obj_name('trash can', objects)",
+      "trash_can_x, trash_can_y = get_obj_xy(trash_can_obj)",
+      "box_obj = parse_obj_name('box', objects)",
+      "i = 0",
+      "while True:",
+      "    if i % 4 == 0:",
+      "        move_to_xy(trash_can_x + 60, trash_can_y + 60)",
+      "    elif i % 4 == 1:",
+      "        move_to_xy(trash_can_x + 60, trash_can_y - 60)",
+      "    elif i % 4 == 2:",
+      "        move_to_xy(trash_can_x - 60, trash_can_y - 60)",
+      "    else:",
+      "        move_to_xy(trash_can_x - 60, trash_can_y + 60)",
+      "    i += 1",
+      "    green_blocks = parse_obj_name('green block', objects)",
+      "    if green_blocks:",
+      "        for green_block in green_blocks:",
+      "            move_to_obj_by_offset(green_block, 0, 0)",
+      "            pick_up_obj(green_block)",
+      "            move_to_obj_by_offset(box_obj, 0, 0)",
+      "            put_down_obj_by_offset(box_obj, 0, 0)"
+    ]
+  }
+]
